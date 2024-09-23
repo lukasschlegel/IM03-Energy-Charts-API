@@ -1,18 +1,25 @@
 <!DOCTYPE html>
-<html lang="de">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no">
     <title>Energieverbrauch in Europa</title>
     <link rel="stylesheet" href="style.css"/>
+
+<link href="https://api.mapbox.com/mapbox-gl-js/v2.11.0/mapbox-gl.css" rel="stylesheet">
+<script src="https://api.mapbox.com/mapbox-gl-js/v2.11.0/mapbox-gl.js"></script>
 </head>
 
 <body>
-    <h1>Energieverbrauch in europäischen Ländern</h1>
-    <input type="text" id="countryInput" placeholder="Gib ein Land ein (z.B. DE für Deutschland, FR für Frankreich)">
-    <button onclick="getEnergyData()">Suchen</button>
-    <div id="result"></div>
+    <div id="map"></div>
 
-<script src="script.js"></script> 
+    <div id="content">
+        <h1>Energieverbrauch in europäischen Ländern</h1>
+        <input type="text" id="countryInput" placeholder="Gib ein Land ein (z.B. DE für Deutschland, FR für Frankreich)">
+        <button onclick="getEnergyData()">Suchen</button>
+        <div id="result"></div>
+    </div>
+
+    <script src="script.js"></script> 
 </body>
 </html>
