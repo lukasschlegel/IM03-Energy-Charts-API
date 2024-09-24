@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no">
-    <title>Energieverbrauch in Europa</title>
+    <title>Stromfresser - Wieviel Strom braucht dein Land?</title>
     <link rel="stylesheet" href="style.css"/>
 
 <link href="https://api.mapbox.com/mapbox-gl-js/v2.11.0/mapbox-gl.css" rel="stylesheet">
@@ -19,15 +19,28 @@
     </div>
 
     <!-- Add the "Nicht berühren" Button -->
-    <button id="torchButton">Nicht berühren</button>
+    <button id="torchButton">Nicht klicken</button>
 
     <div id="content">
-        <h1>Energieverbrauch in europäischen Ländern</h1>
-        <input type="text" id="countryInput" placeholder="Gib ein Land ein...*">
+        <h1>STROMFRESSER</h1>
+        <p>Wähle ein europäisches Land aus und finde heraus, wieviel Strom es verbraucht.</p>
+        <input type="text" id="countryInput" placeholder="Gib ein Land ein europäisches Land ein...*">
         <button id="suchen" onclick="getEnergyData()">Suchen</button>
         <div id="result"></div>
     </div>
-   
+
+    <!-- Div for population information -->
+<div id="population-info" style="display: none;">
+    <h2 id="population-country-name"></h2>
+    <p>Einwohnerzahl: <span id="population-count"></span></p>
+</div>
+
+
+    <!-- New div for the disclaimer text -->
+<div id="disclaimer">
+    *nicht alle Länder vorhanden
+</div>
+
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="script.js"></script> 
 </body>
