@@ -15,6 +15,11 @@ async function getEnergyData() {
     const countryInput = document.getElementById('countryInput').value.trim().toLowerCase(); 
     const resultDiv = document.getElementById('result');
     let countryCode = null;
+    
+    // Reset the chart visibility
+    document.getElementById('chart-container').style.display = 'none';
+
+    // Search for the country in the dataset
     for (const code in countryData) {
         const country = countryData[code];
         if (country.name.toLowerCase() === countryInput || code.toLowerCase() === countryInput) {
@@ -28,30 +33,25 @@ async function getEnergyData() {
         return;
     }
 
-    // Koordinaten des gefundenen Landes
+    // Fly to the selected country
     const coordinates = countryData[countryCode].coordinates;
-
-    // Karte zum angegebenen Land fliegen lassen
     map.flyTo({
         center: coordinates,
-        zoom: 5, // Zoom-Level anpassen
+        zoom: 5, // Zoom level for the selected country
         essential: true
     });
 
-    // API-Anfrage für Energieverbrauch
-    const apiUrl = `https://api.energy-charts.info/public_power?country=${countryCode}`;
+    // Display the chart only if Switzerland is selected
+    if (countryCode === 'CH') {
+        renderChart(); // Show the chart
+    }
+    
+    // Fetch and display energy data (Dummy implementation)
+    const apiUrl = `https://api.allorigins.win/get?url=${encodeURIComponent(`https://api.energy-charts.info/public_power?country=${countryCode}`)}`;
 
     try {
         const response = await fetch(apiUrl);
-        if (!response.ok) {
-            throw new Error("Fehler bei der API-Anfrage");
-        }
-
         const data = await response.json();
-
-        const consumption = production_type.data.consumption || "Keine Daten verfügbar";
-        resultDiv.innerHTML = `<h2>Energieverbrauch in ${countryData[countryCode].name}: ${consumption} kWh</h2>`;
-
     } catch (error) {
         resultDiv.innerHTML = "Fehler beim Abrufen der Daten: " + error.message;
     }
@@ -83,7 +83,70 @@ map.on('load', () => {
             map.setLayoutProperty(layer.id, 'visibility', 'none'); 
         }
     });
-
 });
+
+document.getElementById('torchButton').addEventListener('click', function() {
+    // Toggle the "blended" mode
+    document.body.classList.toggle('blended');
+});
+
+// If in torchlight mode, track the mouse position
+window.addEventListener('mousemove', function(e) {
+    if (document.body.classList.contains('blended')) {
+        document.documentElement.style.setProperty('--pointerX', e.clientX + 'px');
+        document.documentElement.style.setProperty('--pointerY', e.clientY + 'px');
+    }
+});
+
+function renderChart() {
+    document.getElementById('chart-container').style.display = 'block';  // Show the chart
+
+    const nuclearData = 2872.6; // Total or average of nuclear power data
+    const hydroRunOfRiverData = 1525.8; // Total or average of hydro run-of-river data
+    const windOnshoreData = 13.5; // Total or average of wind onshore data
+
+    const data = {
+        labels: [
+            'Nuclear Power Generation',
+            'Hydro Run-of-River',
+            'Wind Onshore'
+        ],
+        datasets: [{
+            label: 'Power Generation (MW)',
+            data: [nuclearData, hydroRunOfRiverData, windOnshoreData],
+            backgroundColor: [
+                'rgb(75, 192, 192)',  // Color for Nuclear Power
+                'rgb(54, 162, 235)',  // Color for Hydro Run-of-River
+                'rgb(255, 99, 132)'   // Color for Wind Onshore
+            ],
+            hoverOffset: 4
+        }]
+    };
+
+    const config = {
+        type: 'doughnut',  // Change to 'pie' if you prefer a pie chart
+        data: data,
+        options: {
+            responsive: true,
+            plugins: {
+                legend: {
+                    position: 'top',
+                },
+                title: {
+                    display: true,
+                    text: 'Energy Generation by Source (MW)'
+                }
+            }
+        }
+    };
+
+    // Clear the previous chart instance (if any) and re-render the chart
+    const ctx = document.getElementById('myChart').getContext('2d');
+    if (window.myChartInstance) {
+        window.myChartInstance.destroy();
+    }
+    window.myChartInstance = new Chart(ctx, config);
+}
+
 
 
