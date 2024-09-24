@@ -23,14 +23,24 @@ html, body {
 
 #content {
     position: absolute;
-    top: 20%;
+    top: 15%;
     left: 50%;
     transform: translate(-50%, -50%); /* Zentriert das Element horizontal und vertikal */
     z-index: 1;
     background-color: rgba(255, 255, 255, 0.8); /* Halbtransparenter Hintergrund */
     padding: 20px;
-    border-radius: 10px;
+    /* border-radius: 10px; */
     text-align: center;
+    border-radius: 18px;
+}
+#countryInput {
+    position: relative;
+    width: 80%;
+    border-radius: 18px;
+}
+
+#suchen {
+    border-radius: 18px;
 }
 
 #form-container {
@@ -63,3 +73,4 @@ h1 {
     color: #fff;
     background: #ee8a65;
 }
+

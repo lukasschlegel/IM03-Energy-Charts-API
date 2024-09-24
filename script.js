@@ -1,4 +1,3 @@
-// Liste von Ländern mit vollständigem Namen und deren Koordinaten (vereinfachte Liste, kann erweitert werden)
 const countryData = {
     'DE': { name: 'Deutschland', coordinates: [10.4515, 51.1657] },
     'FR': { name: 'Frankreich', coordinates: [2.2137, 46.2276] },
@@ -15,16 +14,7 @@ const countryData = {
 async function getEnergyData() {
     const countryInput = document.getElementById('countryInput').value.trim().toLowerCase(); 
     const resultDiv = document.getElementById('result');
-
-    if (!countryInput) {
-        resultDiv.innerHTML = "Bitte gib ein Land ein.";
-        return;
-    }
-
-    // Suche nach dem Länderkürzel oder dem ausgeschriebenen Land
     let countryCode = null;
-
-    // Durchsuche die Länderliste nach einem passenden Namen oder Ländercode
     for (const code in countryData) {
         const country = countryData[code];
         if (country.name.toLowerCase() === countryInput || code.toLowerCase() === countryInput) {
@@ -48,7 +38,7 @@ async function getEnergyData() {
         essential: true
     });
 
-    // API-URL (Beispiel: Diese URL sollte angepasst werden, um tatsächliche Daten abzurufen)
+    // API-Anfrage für Energieverbrauch
     const apiUrl = `https://api.energy-charts.info/public_power?country=${countryCode}`;
 
     try {
@@ -59,22 +49,23 @@ async function getEnergyData() {
 
         const data = await response.json();
 
-        // Hier nehmen wir an, dass die API den Energieverbrauch im Format data.consumption zurückgibt
-        const consumption = data.consumption || "Keine Daten verfügbar";
+        const consumption = production_type.data.consumption || "Keine Daten verfügbar";
         resultDiv.innerHTML = `<h2>Energieverbrauch in ${countryData[countryCode].name}: ${consumption} kWh</h2>`;
+
     } catch (error) {
         resultDiv.innerHTML = "Fehler beim Abrufen der Daten: " + error.message;
     }
 }
 
-// Mapbox Initialisierung
+// Mapbox
 mapboxgl.accessToken = 'pk.eyJ1IjoibHVrYXNzY2hsZWdlbCIsImEiOiJjbHc2Y2drMGIxcGhjMnFwaG1wc21mZ3U4In0.BRdsjYzHNpwgSXhnbXVvzA';
 const map = new mapboxgl.Map({
     container: 'map',
     style: 'mapbox://styles/mapbox/dark-v11',
     zoom: 3.1,
     center: [15, 50],
-    projection: 'globe'
+    projection: 'globe',
+    locale: 'de',
 });
 
 map.on('load', () => {
@@ -87,4 +78,12 @@ map.on('load', () => {
         "star-intensity": 0.03
     });
 
+    map.getStyle().layers.forEach(function(layer) {
+        if (layer.type === 'symbol') {
+            map.setLayoutProperty(layer.id, 'visibility', 'none'); 
+        }
+    });
+
 });
+
+
