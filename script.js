@@ -89,16 +89,16 @@ function renderChart() {
 }
 
 const countryData = {
-    'DE': { name: 'Deutschland', coordinates: [10.4515, 51.1657] },
-    'FR': { name: 'Frankreich', coordinates: [2.2137, 46.2276] },
-    'IT': { name: 'Italien', coordinates: [12.5674, 41.8719] },
-    'ES': { name: 'Spanien', coordinates: [-3.7492, 40.4637] },
-    'AT': { name: 'Österreich', coordinates: [13.3333, 47.5162] },
-    'GB': { name: 'England', coordinates: [-1.1743, 52.3555] },
-    'SE': { name: 'Schweden', coordinates: [18.6435, 60.1282] },
-    'DK': { name: 'Dänemark', coordinates: [9.5018, 56.2639] },
-    'CH': { name: 'Schweiz', coordinates: [8.2275, 46.8182] }, 
-    'PT': { name: 'Portugal', coordinates: [-8.2245, 39.3999] }  
+    'DE': { name: 'Germany', coordinates: [10.4515, 51.1657], aliases: ['Deutschland', 'DE'] },
+    'FR': { name: 'France', coordinates: [2.2137, 46.2276], aliases: ['Frankreich', 'FR'] },
+    'IT': { name: 'Italy', coordinates: [12.5674, 41.8719], aliases: ['Italien', 'IT'] },
+    'ES': { name: 'Spain', coordinates: [-3.7492, 40.4637], aliases: ['Spanien', 'ES'] },
+    'AT': { name: 'Austria', coordinates: [13.3333, 47.5162], aliases: ['Österreich', 'AT'] },
+    'GB': { name: 'United Kingdom', coordinates: [-1.1743, 52.3555], aliases: ['England', 'GB'] },
+    'SE': { name: 'Sweden', coordinates: [18.6435, 60.1282], aliases: ['Schweden', 'SE'] },
+    'DK': { name: 'Denmark', coordinates: [9.5018, 56.2639], aliases: ['Dänemark', 'DK'] },
+    'CH': { name: 'Switzerland', coordinates: [8.2275, 46.8182], aliases: ['Schweiz', 'CH'] }, 
+    'PT': { name: 'Portugal', coordinates: [-8.2245, 39.3999], aliases: ['Portugal', 'PT'] }  
 };
 
 let currentMarker = null;  // Store the current marker
@@ -107,18 +107,18 @@ async function getEnergyData() {
     const countryInput = document.getElementById('countryInput').value.trim().toLowerCase(); 
     const resultDiv = document.getElementById('result');
     let countryCode = null;
-    
+
     // Clear previous marker and chart visibility
     if (currentMarker) {
         currentMarker.remove();
     }
     document.getElementById('chart-container').style.display = 'none';
     document.getElementById('text-container').style.display = 'none';  // Hide the "Hallo Welt" text
-    
-    // Search for the country in the dataset
+
+    // Search for the country in the dataset by checking name and aliases
     for (const code in countryData) {
         const country = countryData[code];
-        if (country.name.toLowerCase() === countryInput || code.toLowerCase() === countryInput) {
+        if (country.name.toLowerCase() === countryInput || country.aliases.some(alias => alias.toLowerCase() === countryInput)) {
             countryCode = code;
             break;
         }
@@ -148,14 +148,32 @@ async function getEnergyData() {
     // Display the "Hallo Welt" text for every selected country
     document.getElementById('text-container').style.display = 'block'; // Show the "Hallo Welt" text
 
-    // API request for energy data (dummy implementation)
-    const apiUrl = `https://api.allorigins.win/get?url=${encodeURIComponent(`https://api.energy-charts.info/public_power?country=${countryCode}`)}`;
-
+    // API request for population data
     try {
-        const response = await fetch(apiUrl);
-        const data = await response.json();
+        const populationApiUrl = 'https://countriesnow.space/api/v0.1/countries/population';
+        const response = await fetch(populationApiUrl, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                country: countryData[countryCode].name
+            })
+        });
+
+        const populationData = await response.json();
+        if (populationData.error || !populationData.data) {
+            resultDiv.innerHTML = "Einwohnerzahl konnte nicht gefunden werden.";
+            return;
+        }
+        
+        const population = populationData.data.populationCounts[populationData.data.populationCounts.length - 1].value;
+
+        // Display the population in the populationText element
+        document.getElementById('populationText').innerText = `${population.toLocaleString()} Einwohner`; 
+
     } catch (error) {
-        resultDiv.innerHTML = "Fehler beim Abrufen der Daten: " + error.message;
+        resultDiv.innerHTML = "Fehler beim Abrufen der Einwohnerzahl: " + error.message;
     }
 }
 
