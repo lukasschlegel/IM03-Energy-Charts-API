@@ -23,11 +23,12 @@ html, body {
 
 #content {
     position: absolute;
-    top: 15%;
+    top: 25%;
     left: 50%;
+    width: 45%;
     transform: translate(-50%, -50%); /* Zentriert das Element horizontal und vertikal */
     z-index: 1;
-    background-color: rgba(255, 255, 255, 0.8); /* Halbtransparenter Hintergrund */
+    background-color: rgba(255, 255, 255, 0.0); /* Halbtransparenter Hintergrund */
     padding: 20px;
     /* border-radius: 10px; */
     text-align: center;
@@ -144,27 +145,53 @@ canvas {
     z-index: 10;
 }
 
-
-#population-info {
+#text-container {
     position: absolute;
-    top: 10%;
-    left: 50%;
+    top: 60%;
+    left: 30%;
     transform: translate(-50%, -50%);
-    width: 300px;
+    width: 200px; /* Adjust width */
+    height: 100px; /* Adjust height */
     background-color: rgba(255, 255, 255, 0.8); /* Semi-transparent background */
-    z-index: 1;
+    z-index: 1; /* Ensure it's above other content */
     border-radius: 10px;
-    padding: 15px;
+    padding: 10px;
     text-align: center;
+    font-size: 24px; /* Font size for the text */
     display: none; /* Hidden by default */
 }
 
-#population-info h2 {
-    margin-bottom: 10px;
+#helloText {
+    color: black; /* Text color */
 }
 
-#population-info p {
-    margin: 5px 0;
+.text-animation {
+    position: absolute;
+    top: 15%; /* Keep the title higher up */
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
 }
 
+.text-animation h1 {
+    color: #111;
+    font-family: "Montserrat", sans-serif;
+    font-size: 72px; /* Reduce font size by 10% (was 80px) */
+    letter-spacing: 5px; /* Reduce letter-spacing for closer letters (was 10px) */
+    text-transform: uppercase;
+}
 
+.text-animation h1 span {
+    animation: glow 2.5s ease-in-out infinite;
+}
+
+@keyframes glow {
+    0%, 100% {
+        color: #eee;
+        text-shadow: 0 0 10px #00acee, 0 0 50px #00acee, 0 0 80px #00acee;
+    }
+    10%, 90% {
+        color: #111;
+        text-shadow: none;
+    }
+}

@@ -20,20 +20,21 @@
 
     <!-- Add the "Nicht berühren" Button -->
     <button id="torchButton">Nicht klicken</button>
-
+    
+    <div class="text-animation">
+        <h1>Stromfresser</h1>
+    </div>
+    
     <div id="content">
-        <h1>STROMFRESSER</h1>
-        <p>Wähle ein europäisches Land aus und finde heraus, wieviel Strom es verbraucht.</p>
-        <input type="text" id="countryInput" placeholder="Gib ein Land ein europäisches Land ein...*">
+        <input type="text" id="countryInput" placeholder="Suche dein Land und finde heraus, wieviel Strom es verbraucht....*">
         <button id="suchen" onclick="getEnergyData()">Suchen</button>
-        <div id="result"></div>
     </div>
 
-    <!-- Div for population information -->
-<div id="population-info" style="display: none;">
-    <h2 id="population-country-name"></h2>
-    <p>Einwohnerzahl: <span id="population-count"></span></p>
+<!-- Text Container for "Hallo Welt" -->
+<div id="text-container" style="display: none;">
+    <p id="helloText">Einwohner</p>
 </div>
+
 
 
     <!-- New div for the disclaimer text -->
