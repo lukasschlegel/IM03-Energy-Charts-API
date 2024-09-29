@@ -250,7 +250,8 @@ async function getEnergyData() {
 
         // Setze die Bevölkerung und die Hauptstadttexte
         const population = populationJson.data.populationCounts[populationJson.data.populationCounts.length - 1].value;
-        document.getElementById('populationText').innerText = `${population.toLocaleString()}`;
+        document.getElementById('populationText').innerHTML = `${population.toLocaleString()}`;
+
         
         // Füge die Klasse für den Population-Text hinzu
         document.getElementById('populationText').classList.add('population-style');
@@ -306,3 +307,4 @@ let spans = document.querySelectorAll(".text-animation h1 span");
 for (let i = 0; i < spans.length; i++) {
     spans[i].style.animationDelay = (i * 250) + "ms";
 }
+
