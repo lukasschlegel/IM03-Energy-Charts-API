@@ -45,26 +45,21 @@ function renderChart() {
     const hydroRunOfRiverData = 1525.8; // Sample hydro run-of-river data
     const windOnshoreData = 13.5; // Sample wind onshore data
 
+    const labels = ['Nuclear Power Generation', 'Hydro Run-of-River', 'Wind Onshore'];
+    
     const data = {
-        labels: [
-            'Nuclear Power Generation',
-            'Hydro Run-of-River',
-            'Wind Onshore'
-        ],
+        labels: labels,
         datasets: [{
             label: 'Power Generation (MW)',
             data: [nuclearData, hydroRunOfRiverData, windOnshoreData],
-            backgroundColor: [
-                'rgb(75, 192, 192)',  // Color for Nuclear Power
-                'rgb(54, 162, 235)',  // Color for Hydro Run-of-River
-                'rgb(255, 99, 132)'   // Color for Wind Onshore
-            ],
-            hoverOffset: 4
+            fill: false,
+            borderColor: 'rgb(75, 192, 192)',
+            tension: 0.1
         }]
     };
 
     const config = {
-        type: 'doughnut',
+        type: 'line',
         data: data,
         options: {
             responsive: true,
@@ -75,6 +70,20 @@ function renderChart() {
                 title: {
                     display: true,
                     text: 'Energy Generation by Source (MW)'
+                }
+            },
+            scales: {
+                x: {
+                    title: {
+                        display: true,
+                        text: 'Energy Source'
+                    }
+                },
+                y: {
+                    title: {
+                        display: true,
+                        text: 'Power Generation (MW)'
+                    }
                 }
             }
         }

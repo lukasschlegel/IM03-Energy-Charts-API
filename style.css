@@ -135,15 +135,16 @@ body.blended:before {
 
 #chart-container {
     position: absolute;
-    top: 50%;
+    top: 53%;
     left: 75%;
     transform: translate(-50%, -50%);
-    width: 250px; /* Adjust width to ensure enough space for the chart */
+    width: 550px; /* Adjust width to ensure enough space for the chart */
     height: 250px; /* Adjust height to ensure enough space for the chart */
-    background-color: rgba(255, 255, 255, 0.8); /* Semi-transparent background */
+    background-color: #bae4f5;
     z-index: 1; /* Ensure the chart is above other content */
     border-radius: 10px;
     padding: 10px; /* Add some padding for better presentation */
+    box-shadow: 0 0 3px #00acee, 0 0 3px #00acee, 0 0 30px #00acee; /* Glowing effect */
 }
 
 canvas {
