@@ -35,19 +35,22 @@
     </div>   
 
 <!-- Text Container for "Einwohnerzahl" with flag and loading placeholder -->
-<div id="text-container" style="display: none;">
+<!-- Text Container for "Einwohnerzahl" with flag and loading placeholder -->
+<div id="text-container" class="custom-text-container">
     <!-- Placeholder for loading message -->
-    <div id="loadingPlaceholder" style="display: none;">
+    <div id="loadingPlaceholder" class="custom-loading">
         <p id="loadingText">Infos werden geladen...</p>
     </div>
 
-    <p id="capitalText" style="display: none;">Hauptstadt:</p>
+    <p id="capitalText" class="custom-capital" style="display: none;">Hauptstadt:</p>
 
     <!-- Flag and population info (hidden until loaded) -->
-    <img id="flagImage" src="" alt="Country Flag">
-    <p id="helloText">Einwohnerzahl:</p>
-    <p id="populationText"></p>
+    <img id="flagImage" class="custom-flag" src="" alt="Country Flag">
+    
+    <p id="helloText" class="custom-hello">Einwohnerzahl:</p>
+    <p id="populationText" class="custom-population"></p>
 </div>
+
 
 
     <!-- New div for the disclaimer text -->

@@ -260,7 +260,7 @@ async function getEnergyData() {
 
         // Now, after data is loaded, show the country's name in German in bold
         const countryNameInGerman = countryData[countryCode].aliases[0]; // Use the German name from the aliases array
-        const countryNameText = `Land: ${countryNameInGerman}`;
+        const countryNameText = `${countryNameInGerman}`;
         
         // Create a new element for the country name and add it to the text container
         const countryNameElement = document.createElement('p');
