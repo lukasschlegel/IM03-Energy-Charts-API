@@ -136,6 +136,54 @@ const countryData = {
     'MC': { name: 'Monaco', coordinates: [7.4128, 43.7384], aliases: ['Monaco', 'MC'] }
 };
 
+const capitalTranslations = {
+    'Germany': 'Berlin',
+    'France': 'Paris',
+    'Italy': 'Rom',
+    'Spain': 'Madrid',
+    'Austria': 'Wien',
+    'United Kingdom': 'London',
+    'Sweden': 'Stockholm',
+    'Denmark': 'Kopenhagen',
+    'Switzerland': 'Bern',
+    'Portugal': 'Lissabon',
+    'Norway': 'Oslo',
+    'Finland': 'Helsinki',
+    'Poland': 'Warschau',
+    'Czech Republic': 'Prag',
+    'Hungary': 'Budapest',
+    'Greece': 'Athen',
+    'Netherlands': 'Amsterdam',
+    'Belgium': 'Brüssel',
+    'Romania': 'Bukarest',
+    'Bulgaria': 'Sofia',
+    'Croatia': 'Zagreb',
+    'Serbia': 'Belgrad',
+    'Slovenia': 'Ljubljana',
+    'Slovakia': 'Bratislava',
+    'Estonia': 'Tallinn',
+    'Latvia': 'Riga',
+    'Lithuania': 'Vilnius',
+    'Ireland': 'Dublin',
+    'Iceland': 'Reykjavik',
+    'Luxembourg': 'Luxemburg',
+    'Malta': 'Valletta',
+    'Cyprus': 'Nikosia',
+    'Albania': 'Tirana',
+    'North Macedonia': 'Skopje',
+    'Moldova': 'Chisinau',
+    'Ukraine': 'Kiew',
+    'Belarus': 'Minsk',
+    'Bosnia and Herzegovina': 'Sarajevo',
+    'Montenegro': 'Podgorica',
+    'Kosovo': 'Pristina',
+    'Liechtenstein': 'Vaduz',
+    'Vatican City': 'Vatikanstadt',
+    'San Marino': 'San Marino',
+    'Andorra': 'Andorra la Vella',
+    'Monaco': 'Monaco'
+};
+
 function checkEnter(event) {
     // Check if the key pressed is "Enter"
     if (event.key === "Enter") {
@@ -144,12 +192,13 @@ function checkEnter(event) {
 }
 
 let currentMarker = null;  // Store the current marker
+
 async function getEnergyData() {
     const countryInput = document.getElementById('countryInput').value.trim().toLowerCase(); 
     const resultDiv = document.getElementById('result');
     let countryCode = null;
 
-    // Clear previous marker, chart visibility, and flag image
+    // Clear previous marker, chart visibility, flag image, and capital text
     if (currentMarker) {
         currentMarker.remove();
     }
@@ -159,6 +208,7 @@ async function getEnergyData() {
     document.getElementById('flagImage').style.display = 'none'; // Hide flag until it's loaded
     document.getElementById('helloText').style.display = 'none'; // Hide text until loaded
     document.getElementById('populationText').style.display = 'none'; // Hide text until loaded
+    document.getElementById('capitalText').style.display = 'none'; // Hide capital text until loaded
 
     // Show loading placeholder
     document.getElementById('loadingPlaceholder').style.display = 'block';
@@ -220,7 +270,7 @@ async function getEnergyData() {
         });
 
         const [populationData, flagData] = await Promise.all([populationResponse, flagResponse]);
-        
+
         const populationJson = await populationData.json();
         const flagJson = await flagData.json();
 
@@ -233,6 +283,11 @@ async function getEnergyData() {
         const population = populationJson.data.populationCounts[populationJson.data.populationCounts.length - 1].value;
         document.getElementById('populationText').innerText = `${population.toLocaleString()} Einwohner`;
         
+        // Use the translation table to get the capital in German
+        const countryName = countryData[countryCode].name;
+        const capital = capitalTranslations[countryName] || 'Unbekannt'; // Fallback to 'Unbekannt' if not in the table
+        document.getElementById('capitalText').innerText = `Hauptstadt: ${capital}`; // Set the capital text
+        
         // Set the flag image and show it
         document.getElementById('flagImage').src = flagJson.data.flag;
         document.getElementById('flagImage').style.display = 'block'; // Show flag once it's loaded
@@ -241,13 +296,13 @@ async function getEnergyData() {
         document.getElementById('loadingPlaceholder').style.display = 'none';
         document.getElementById('helloText').style.display = 'block';
         document.getElementById('populationText').style.display = 'block';
+        document.getElementById('capitalText').style.display = 'block'; // Show the capital
 
     } catch (error) {
         resultDiv.innerHTML = "Fehler beim Abrufen der Daten: " + error.message;
         document.getElementById('loadingPlaceholder').style.display = 'none'; // Hide loading on error
     }
 }
-
 
 function addCountryMarker(coordinates) {
     // Create a custom marker element
