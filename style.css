@@ -371,4 +371,14 @@ canvas {
     margin: 5px 0;
 }
 
+#capitalLabel {
+    font-weight: normal;
+    color: #000; /* Text color for the label */
+}
+
+#capitalName {
+    font-style: normal; /* Style for the capital name */
+    color: #000000; /* Text color for the capital name */
+}
+
 

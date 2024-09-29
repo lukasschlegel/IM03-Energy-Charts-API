@@ -252,7 +252,10 @@ async function getEnergyData() {
         
         // Use the translation from the countryData to get the capital in German
         const capitalTranslation = countryData[countryCode].capitalTranslation || 'Unbekannt';
-        document.getElementById('capitalText').innerText = `Hauptstadt: ${capitalTranslation}`;
+        document.getElementById('capitalLabel').innerText = 'Hauptstadt:';
+        document.getElementById('capitalName').innerText = capitalTranslation;
+        
+
 
         // Set the flag image and show it
         document.getElementById('flagImage').src = flagJson.data.flag;
