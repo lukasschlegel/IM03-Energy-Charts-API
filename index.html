@@ -32,14 +32,20 @@
                 <img src="img/icon_lupe.webp" alt="Lupe" style="width: 20px; height: 20px;">
             </button>
         </div>
-    </div>    
+    </div>   
 
-<!-- Text Container for "Einwohnerzahl" -->
+<!-- Text Container for "Einwohnerzahl" with flag and loading placeholder -->
 <div id="text-container" style="display: none;">
-    <p id="helloText">Einwohnerzahl:</p>
-    <p id="populationText"></p> <!-- New element to display the population -->
-</div>
+    <!-- Placeholder for loading message -->
+    <div id="loadingPlaceholder" style="display: none;">
+        <p id="loadingText">Infos werden geladen...</p>
+    </div>
 
+    <!-- Flag and population info (hidden until loaded) -->
+    <img id="flagImage" src="" alt="Country Flag">
+    <p id="helloText">Einwohnerzahl:</p>
+    <p id="populationText"></p>
+</div>
 
 
     <!-- New div for the disclaimer text -->

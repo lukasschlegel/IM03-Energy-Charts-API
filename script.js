@@ -109,18 +109,25 @@ function checkEnter(event) {
 }
 
 let currentMarker = null;  // Store the current marker
-
 async function getEnergyData() {
     const countryInput = document.getElementById('countryInput').value.trim().toLowerCase(); 
     const resultDiv = document.getElementById('result');
     let countryCode = null;
 
-    // Clear previous marker and chart visibility
+    // Clear previous marker, chart visibility, and flag image
     if (currentMarker) {
         currentMarker.remove();
     }
     document.getElementById('chart-container').style.display = 'none';
-    document.getElementById('text-container').style.display = 'none';  // Hide the "Hallo Welt" text
+    document.getElementById('text-container').style.display = 'none'; // Hide the text container initially
+    document.getElementById('flagImage').src = ''; // Clear the flag image
+    document.getElementById('flagImage').style.display = 'none'; // Hide flag until it's loaded
+    document.getElementById('helloText').style.display = 'none'; // Hide text until loaded
+    document.getElementById('populationText').style.display = 'none'; // Hide text until loaded
+
+    // Show loading placeholder
+    document.getElementById('loadingPlaceholder').style.display = 'block';
+    document.getElementById('text-container').style.display = 'block'; // Show the container
 
     // Search for the country in the dataset by checking name and aliases
     for (const code in countryData) {
@@ -133,6 +140,7 @@ async function getEnergyData() {
 
     if (!countryCode) {
         resultDiv.innerHTML = "Land nicht gefunden.";
+        document.getElementById('loadingPlaceholder').style.display = 'none'; // Hide loading if country not found
         return;
     }
 
@@ -140,7 +148,7 @@ async function getEnergyData() {
     const coordinates = countryData[countryCode].coordinates;
     map.flyTo({
         center: coordinates,
-        zoom: 5, // Adjust zoom level for the selected country
+        zoom: 5,
         essential: true
     });
 
@@ -149,16 +157,13 @@ async function getEnergyData() {
 
     // Display the chart only if Switzerland is selected
     if (countryCode === 'CH') {
-        renderChart(); // Show the chart
+        renderChart();
     }
 
-    // Display the "Hallo Welt" text for every selected country
-    document.getElementById('text-container').style.display = 'block'; // Show the "Hallo Welt" text
-
-    // API request for population data
+    // Fetch the population and flag data
     try {
         const populationApiUrl = 'https://countriesnow.space/api/v0.1/countries/population';
-        const response = await fetch(populationApiUrl, {
+        const populationResponse = fetch(populationApiUrl, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -168,21 +173,46 @@ async function getEnergyData() {
             })
         });
 
-        const populationData = await response.json();
-        if (populationData.error || !populationData.data) {
-            resultDiv.innerHTML = "Einwohnerzahl konnte nicht gefunden werden.";
+        const flagApiUrl = 'https://countriesnow.space/api/v0.1/countries/flag/images';
+        const flagResponse = fetch(flagApiUrl, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                country: countryData[countryCode].name
+            })
+        });
+
+        const [populationData, flagData] = await Promise.all([populationResponse, flagResponse]);
+        
+        const populationJson = await populationData.json();
+        const flagJson = await flagData.json();
+
+        if (populationJson.error || !populationJson.data || flagJson.error || !flagJson.data) {
+            resultDiv.innerHTML = "Daten konnten nicht gefunden werden.";
+            document.getElementById('loadingPlaceholder').style.display = 'none'; // Hide loading if there's an error
             return;
         }
-        
-        const population = populationData.data.populationCounts[populationData.data.populationCounts.length - 1].value;
 
-        // Display the population in the populationText element
-        document.getElementById('populationText').innerText = `${population.toLocaleString()} Einwohner`; 
+        const population = populationJson.data.populationCounts[populationJson.data.populationCounts.length - 1].value;
+        document.getElementById('populationText').innerText = `${population.toLocaleString()} Einwohner`;
+        
+        // Set the flag image and show it
+        document.getElementById('flagImage').src = flagJson.data.flag;
+        document.getElementById('flagImage').style.display = 'block'; // Show flag once it's loaded
+
+        // Hide the loading placeholder and show the final content
+        document.getElementById('loadingPlaceholder').style.display = 'none';
+        document.getElementById('helloText').style.display = 'block';
+        document.getElementById('populationText').style.display = 'block';
 
     } catch (error) {
-        resultDiv.innerHTML = "Fehler beim Abrufen der Einwohnerzahl: " + error.message;
+        resultDiv.innerHTML = "Fehler beim Abrufen der Daten: " + error.message;
+        document.getElementById('loadingPlaceholder').style.display = 'none'; // Hide loading on error
     }
 }
+
 
 function addCountryMarker(coordinates) {
     // Create a new marker at the center of the country

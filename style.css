@@ -163,25 +163,6 @@ canvas {
     z-index: 10;
 }
 
-#text-container {
-    position: absolute;
-    top: 60%;
-    left: 30%;
-    transform: translate(-50%, -50%);
-    width: 200px; /* Adjust width */
-    height: 100px; /* Adjust height */
-    background-color: #bae4f5; /* Same background color as the input field */
-    z-index: 1; /* Ensure it's above other content */
-    border-radius: 10px;
-    padding: 10px;
-    text-align: center;
-    font-size: 24px; /* Font size for the text */
-    color: rgb(0, 0, 0); /* Text color inside the container */
-    display: none; /* Hidden by default */
-    box-shadow: 0 0 3px #00acee, 0 0 3px #00acee, 0 0 30px #00acee; /* Permanent glowing effect, same as input */
-    font-family: 'Nunito', sans-serif;
-}
-
 #helloText {
     color: rgb(0, 0, 0); /* Set text color to white to match the glowing effect */
     font-family: 'Lato', sans-serif;
@@ -234,4 +215,55 @@ canvas {
     border: 1px solid #ccc;
     font-size: 16px;
     box-sizing: border-box;
+}
+
+#text-container {
+    position: absolute;
+    top: 60%;
+    left: 35%;
+    transform: translate(-50%, -50%);
+    padding: 10px;
+    background-color: #bae4f5; /* Background color as before */
+    z-index: 1;
+    border-radius: 10px;
+    text-align: center;
+    box-shadow: 0 0 3px #00acee, 0 0 3px #00acee, 0 0 30px #00acee; /* Glowing effect */
+    font-family: 'Nunito', sans-serif;
+    display: none;
+    width: auto;
+    height: auto;
+    max-width: 300px;
+}
+
+#flagImage {
+    display: none; /* Initially hidden until loaded */
+    margin: 0 auto;
+    width: 75px; /* Smaller size */
+    height: auto;
+    border-radius: 5px;
+    margin-bottom: 10px; /* Space between flag and text */
+}
+
+#loadingPlaceholder {
+    background-color: rgba(255, 255, 255, 0); /* Transparent background */
+    padding: 10px;
+    border-radius: 5px;
+}
+
+#loadingText {
+    margin: 0;
+    color: #000; /* Text color */
+    font-size: 18px; /* Font size for loading text */
+}
+
+#helloText {
+    color: rgb(0, 0, 0); /* Text color */
+    font-family: 'Lato', sans-serif;
+    display: none; /* Initially hidden until loaded */
+}
+
+#populationText {
+    color: rgb(0, 0, 0); /* Text color */
+    font-family: 'Lato', sans-serif;
+    display: none; /* Initially hidden until loaded */
 }
