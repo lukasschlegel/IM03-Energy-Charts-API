@@ -266,6 +266,7 @@ canvas {
 #populationText {
     color: rgb(0, 0, 0); /* Text color */
     font-family: 'Lato', sans-serif;
+    font-style: normal; /* Style for the capital name */
     display: none; /* Initially hidden until loaded */
 }
 
@@ -361,6 +362,7 @@ canvas {
 .custom-hello, .custom-population {
     color: rgb(0, 0, 0);
     font-family: 'Lato', sans-serif;
+    font-style: bold;
     display: none;
     font-size: 18px;
     margin-bottom: 5px;
@@ -381,4 +383,20 @@ canvas {
     color: #000000; /* Text color for the capital name */
 }
 
+.custom-capital {
+    color: rgb(0, 0, 0);
+    font-family: 'Lato', sans-serif;
+    display: none;
+    font-size: 18px;
+    margin-bottom: 10px;
+}
+
+.capital-name {
+    font-weight: bold;  /* Text fett darstellen */
+    color: rgb(0, 0, 0);  /* Textfarbe */
+    font-size: 18px;  /* Schriftgröße */
+    font-family: 'Lato', sans-serif;
+    margin: 0;  /* Kein zusätzlicher Abstand */
+    display: none;  /* Wird erst sichtbar, wenn geladen */
+}
 

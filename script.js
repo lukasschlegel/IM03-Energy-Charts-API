@@ -163,24 +163,26 @@ async function getEnergyData() {
         currentMarker.remove();
     }
     document.getElementById('chart-container').style.display = 'none';
-    document.getElementById('text-container').style.display = 'none'; // Hide the text container initially
+    document.getElementById('text-container').style.display = 'none'; // Verstecke den gesamten Textcontainer
     document.getElementById('flagImage').src = ''; // Clear the flag image
-    document.getElementById('flagImage').style.display = 'none'; // Hide flag until it's loaded
-    document.getElementById('helloText').style.display = 'none'; // Hide text until loaded
-    document.getElementById('populationText').style.display = 'none'; // Hide text until loaded
-    document.getElementById('capitalText').style.display = 'none'; // Hide capital text until loaded
+    document.getElementById('flagImage').style.display = 'none'; // Verstecke die Flagge
+    document.getElementById('helloText').style.display = 'none'; // Verstecke den "Einwohnerzahl"-Text
+    document.getElementById('populationText').style.display = 'none'; // Verstecke den Bevölkerungstext
+    document.getElementById('capitalText').style.display = 'none'; // Verstecke den Hauptstadttext
+    document.getElementById('capitalName').innerText = '';  // Leere den Hauptstadttext
+    document.getElementById('capitalName').style.display = 'none';  // Verstecke den Hauptstadttext
 
-    // Remove the country name text if it exists
+    // Entferne den Ländernamen, falls er bereits existiert
     const existingCountryNameElement = document.getElementById('countryNameText');
     if (existingCountryNameElement) {
         existingCountryNameElement.remove();
     }
 
-    // Show loading placeholder
+    // Zeige den Lade-Platzhalter an und verstecke den Textcontainer, bis die Daten geladen sind
     document.getElementById('loadingPlaceholder').style.display = 'block';
-    document.getElementById('text-container').style.display = 'block'; // Show the container
+    document.getElementById('text-container').style.display = 'block'; // Zeige den Textcontainer nach dem Laden der Daten
 
-    // Search for the country in the dataset by checking name and aliases
+    // Suche nach dem Land im Dataset
     for (const code in countryData) {
         const country = countryData[code];
         if (country.name.toLowerCase() === countryInput || country.aliases.some(alias => alias.toLowerCase() === countryInput)) {
@@ -190,12 +192,12 @@ async function getEnergyData() {
     }
 
     if (!countryCode) {
-        document.getElementById('loadingPlaceholder').style.display = 'none'; // Hide loading if country not found
+        document.getElementById('loadingPlaceholder').style.display = 'none'; // Verstecke den Lade-Platzhalter, wenn das Land nicht gefunden wurde
         alert("Land nicht gefunden.");
         return;
     }
 
-    // Fly to the capital of the selected country
+    // Zoome zur Hauptstadt des gewählten Landes
     const capitalCoordinates = countryData[countryCode].capital;
     map.flyTo({
         center: capitalCoordinates,
@@ -203,15 +205,15 @@ async function getEnergyData() {
         essential: true
     });
 
-    // Add a marker to the capital city of the country
+    // Füge einen Marker zur Hauptstadt hinzu
     addCountryMarker(capitalCoordinates);
 
-    // Display the chart only if Switzerland is selected
+    // Zeige das Diagramm nur, wenn die Schweiz ausgewählt wurde
     if (countryCode === 'CH') {
         renderChart();
     }
 
-    // Fetch the population and flag data
+    // Lade die Bevölkerungs- und Flaggendaten
     try {
         const populationApiUrl = 'https://countriesnow.space/api/v0.1/countries/population';
         const populationResponse = await fetch(populationApiUrl, {
@@ -242,47 +244,42 @@ async function getEnergyData() {
 
         if (populationJson.error || !populationJson.data || flagJson.error || !flagJson.data) {
             alert("Daten konnten nicht gefunden werden.");
-            document.getElementById('loadingPlaceholder').style.display = 'none'; // Hide loading if there's an error
+            document.getElementById('loadingPlaceholder').style.display = 'none'; // Verstecke den Lade-Platzhalter bei einem Fehler
             return;
         }
 
-        // Set the population and capital text
+        // Setze die Bevölkerung und die Hauptstadttexte
         const population = populationJson.data.populationCounts[populationJson.data.populationCounts.length - 1].value;
         document.getElementById('populationText').innerText = `${population.toLocaleString()} Einwohner`;
-        
-        // Use the translation from the countryData to get the capital in German
+
         const capitalTranslation = countryData[countryCode].capitalTranslation || 'Unbekannt';
         document.getElementById('capitalLabel').innerText = 'Hauptstadt:';
         document.getElementById('capitalName').innerText = capitalTranslation;
-        
+        document.getElementById('capitalName').style.display = 'block';  // Zeige den Hauptstadttext wieder an
 
-
-        // Set the flag image and show it
+        // Setze das Flaggenbild und zeige es an
         document.getElementById('flagImage').src = flagJson.data.flag;
-        document.getElementById('flagImage').style.display = 'block'; // Show flag once it's loaded
+        document.getElementById('flagImage').style.display = 'block'; // Zeige die Flagge an, sobald sie geladen ist
 
-        // Now, after data is loaded, show the country's name in German in bold
-        const countryNameInGerman = countryData[countryCode].aliases[0]; // Use the German name from the aliases array
+        // Zeige den Ländernamen in fett
+        const countryNameInGerman = countryData[countryCode].aliases[0];
         const countryNameText = `${countryNameInGerman}`;
-        
-        // Create a new element for the country name and add it to the text container
         const countryNameElement = document.createElement('p');
         countryNameElement.id = 'countryNameText';
-        countryNameElement.innerHTML = `<strong>${countryNameText}</strong>`; // Bold the text using <strong> tag
+        countryNameElement.innerHTML = `<strong>${countryNameText}</strong>`;
         document.getElementById('text-container').insertBefore(countryNameElement, document.getElementById('flagImage'));
 
-        // Hide the loading placeholder and show the final content
+        // Verstecke den Lade-Platzhalter und zeige den restlichen Textcontainer an
         document.getElementById('loadingPlaceholder').style.display = 'none';
         document.getElementById('helloText').style.display = 'block';
         document.getElementById('populationText').style.display = 'block';
-        document.getElementById('capitalText').style.display = 'block'; // Show the capital
+        document.getElementById('capitalText').style.display = 'block'; // Zeige den Text der Hauptstadt an
 
     } catch (error) {
         alert("Fehler beim Abrufen der Daten: " + error.message);
-        document.getElementById('loadingPlaceholder').style.display = 'none'; // Hide loading on error
+        document.getElementById('loadingPlaceholder').style.display = 'none'; // Verstecke den Lade-Platzhalter bei einem Fehler
     }
 }
-
 
 function addCountryMarker(coordinates) {
     // Create a custom marker element
