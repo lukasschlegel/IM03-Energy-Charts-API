@@ -41,7 +41,7 @@ html, body {
     background-color: #bae4f5; /* Set the background to black */
     border: 2px solid; /* Make the border thicker */
     border-color: #00acee; /* Match the color of the glowing h1 text */
-    color: white; /* Set the text color to white */
+    color: rgb(0, 0, 0); /* Set the text color to white */
     font-size: 16px;
     box-sizing: border-box;
     outline: none;
