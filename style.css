@@ -152,7 +152,7 @@ canvas {
     transform: translate(-50%, -50%);
     width: 200px; /* Adjust width */
     height: 100px; /* Adjust height */
-    background-color: rgba(255, 255, 255, 0.8); /* Semi-transparent background */
+    background-color: #67aac5; /* Semi-transparent background */
     z-index: 1; /* Ensure it's above other content */
     border-radius: 10px;
     padding: 10px;
