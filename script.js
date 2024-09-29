@@ -158,7 +158,7 @@ async function getEnergyData() {
     const countryInput = document.getElementById('countryInput').value.trim().toLowerCase(); 
     let countryCode = null;
 
-    // Clear previous marker, chart visibility, flag image, and capital text
+    // Clear previous marker, chart visibility, flag image, capital text, and country name
     if (currentMarker) {
         currentMarker.remove();
     }
@@ -169,6 +169,12 @@ async function getEnergyData() {
     document.getElementById('helloText').style.display = 'none'; // Hide text until loaded
     document.getElementById('populationText').style.display = 'none'; // Hide text until loaded
     document.getElementById('capitalText').style.display = 'none'; // Hide capital text until loaded
+
+    // Remove the country name text if it exists
+    const existingCountryNameElement = document.getElementById('countryNameText');
+    if (existingCountryNameElement) {
+        existingCountryNameElement.remove();
+    }
 
     // Show loading placeholder
     document.getElementById('loadingPlaceholder').style.display = 'block';
@@ -252,6 +258,16 @@ async function getEnergyData() {
         document.getElementById('flagImage').src = flagJson.data.flag;
         document.getElementById('flagImage').style.display = 'block'; // Show flag once it's loaded
 
+        // Now, after data is loaded, show the country's name in German in bold
+        const countryNameInGerman = countryData[countryCode].aliases[0]; // Use the German name from the aliases array
+        const countryNameText = `Land: ${countryNameInGerman}`;
+        
+        // Create a new element for the country name and add it to the text container
+        const countryNameElement = document.createElement('p');
+        countryNameElement.id = 'countryNameText';
+        countryNameElement.innerHTML = `<strong>${countryNameText}</strong>`; // Bold the text using <strong> tag
+        document.getElementById('text-container').insertBefore(countryNameElement, document.getElementById('flagImage'));
+
         // Hide the loading placeholder and show the final content
         document.getElementById('loadingPlaceholder').style.display = 'none';
         document.getElementById('helloText').style.display = 'block';
@@ -263,6 +279,7 @@ async function getEnergyData() {
         document.getElementById('loadingPlaceholder').style.display = 'none'; // Hide loading on error
     }
 }
+
 
 function addCountryMarker(coordinates) {
     // Create a custom marker element
