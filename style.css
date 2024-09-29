@@ -45,7 +45,7 @@ html, body {
     font-size: 16px;
     box-sizing: border-box;
     outline: none;
-    box-shadow: 0 0 5px #00acee, 0 0 5px #00acee, 0 0 30px #00acee; /* Permanent glowing effect */
+    box-shadow: 0 0 3px #00acee, 0 0 3px #00acee, 0 0 30px #00acee; /* Permanent glowing effect, same as input */
 }
 
 #suchen {
@@ -159,7 +159,7 @@ canvas {
     background-color: rgba(255, 255, 255, 0); /* Semi-transparent background */
     padding: 10px;
     font-size: 14px;
-    color: #ffffff; /* Text color */
+    color: #000000; /* Text color */
     z-index: 10;
 }
 
@@ -170,17 +170,21 @@ canvas {
     transform: translate(-50%, -50%);
     width: 200px; /* Adjust width */
     height: 100px; /* Adjust height */
-    background-color: #67aac5; /* Semi-transparent background */
+    background-color: #bae4f5; /* Same background color as the input field */
     z-index: 1; /* Ensure it's above other content */
     border-radius: 10px;
     padding: 10px;
     text-align: center;
     font-size: 24px; /* Font size for the text */
+    color: rgb(0, 0, 0); /* Text color inside the container */
     display: none; /* Hidden by default */
+    box-shadow: 0 0 3px #00acee, 0 0 3px #00acee, 0 0 30px #00acee; /* Permanent glowing effect, same as input */
+    font-family: 'Nunito', sans-serif;
 }
 
 #helloText {
-    color: black; /* Text color */
+    color: rgb(0, 0, 0); /* Set text color to white to match the glowing effect */
+    font-family: 'Lato', sans-serif;
 }
 
 .text-animation {
