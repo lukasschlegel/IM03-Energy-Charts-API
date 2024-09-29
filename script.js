@@ -94,11 +94,46 @@ const countryData = {
     'IT': { name: 'Italy', coordinates: [12.5674, 41.8719], aliases: ['Italien', 'IT'] },
     'ES': { name: 'Spain', coordinates: [-3.7492, 40.4637], aliases: ['Spanien', 'ES'] },
     'AT': { name: 'Austria', coordinates: [13.3333, 47.5162], aliases: ['Österreich', 'AT'] },
-    'GB': { name: 'United Kingdom', coordinates: [-1.1743, 52.3555], aliases: ['England', 'GB'] },
+    'GB': { name: 'United Kingdom', coordinates: [-1.1743, 52.3555], aliases: ['England', 'GB', 'UK', 'Vereinigtes Königreich'] },
     'SE': { name: 'Sweden', coordinates: [18.6435, 60.1282], aliases: ['Schweden', 'SE'] },
     'DK': { name: 'Denmark', coordinates: [9.5018, 56.2639], aliases: ['Dänemark', 'DK'] },
-    'CH': { name: 'Switzerland', coordinates: [8.2275, 46.8182], aliases: ['Schweiz', 'CH'] }, 
-    'PT': { name: 'Portugal', coordinates: [-8.2245, 39.3999], aliases: ['Portugal', 'PT'] }  
+    'CH': { name: 'Switzerland', coordinates: [8.2275, 46.8182], aliases: ['Schweiz', 'CH'] },
+    'PT': { name: 'Portugal', coordinates: [-8.2245, 39.3999], aliases: ['Portugal', 'PT'] },
+    'NO': { name: 'Norway', coordinates: [8.4689, 60.472], aliases: ['Norwegen', 'NO'] },
+    'FI': { name: 'Finland', coordinates: [25.7482, 61.9241], aliases: ['Finnland', 'FI'] },
+    'PL': { name: 'Poland', coordinates: [19.1451, 51.9194], aliases: ['Polen', 'PL'] },
+    'CZ': { name: 'Czech Republic', coordinates: [15.4729, 49.8175], aliases: ['Tschechien', 'CZ', 'Czechia'] },
+    'HU': { name: 'Hungary', coordinates: [19.5033, 47.1625], aliases: ['Ungarn', 'HU'] },
+    'GR': { name: 'Greece', coordinates: [21.8243, 39.0742], aliases: ['Griechenland', 'GR'] },
+    'NL': { name: 'Netherlands', coordinates: [5.2913, 52.1326], aliases: ['Niederlande', 'NL', 'Holland'] },
+    'BE': { name: 'Belgium', coordinates: [4.4699, 50.5039], aliases: ['Belgien', 'BE'] },
+    'RO': { name: 'Romania', coordinates: [24.9668, 45.9432], aliases: ['Rumänien', 'RO'] },
+    'BG': { name: 'Bulgaria', coordinates: [25.4858, 42.7339], aliases: ['Bulgarien', 'BG'] },
+    'HR': { name: 'Croatia', coordinates: [15.2, 45.1], aliases: ['Kroatien', 'HR'] },
+    'RS': { name: 'Serbia', coordinates: [21.0059, 44.0165], aliases: ['Serbien', 'RS'] },
+    'SI': { name: 'Slovenia', coordinates: [14.9955, 46.1512], aliases: ['Slowenien', 'SI'] },
+    'SK': { name: 'Slovakia', coordinates: [19.699, 48.669], aliases: ['Slowakei', 'SK'] },
+    'EE': { name: 'Estonia', coordinates: [25.0136, 58.5953], aliases: ['Estland', 'EE'] },
+    'LV': { name: 'Latvia', coordinates: [24.6032, 56.8796], aliases: ['Lettland', 'LV'] },
+    'LT': { name: 'Lithuania', coordinates: [23.8813, 55.1694], aliases: ['Litauen', 'LT'] },
+    'IE': { name: 'Ireland', coordinates: [-8.2439, 53.4129], aliases: ['Irland', 'IE'] },
+    'IS': { name: 'Iceland', coordinates: [-19.0208, 64.9631], aliases: ['Island', 'IS'] },
+    'LU': { name: 'Luxembourg', coordinates: [6.1296, 49.6117], aliases: ['Luxemburg', 'LU'] },
+    'MT': { name: 'Malta', coordinates: [14.3754, 35.9375], aliases: ['MT'] },
+    'CY': { name: 'Cyprus', coordinates: [33.4299, 35.1264], aliases: ['Zypern', 'CY'] },
+    'AL': { name: 'Albania', coordinates: [20.1683, 41.1533], aliases: ['Albanien', 'AL'] },
+    'MK': { name: 'North Macedonia', coordinates: [21.7453, 41.6086], aliases: ['Nordmazedonien', 'MK'] },
+    'MD': { name: 'Moldova', coordinates: [28.3699, 47.4116], aliases: ['Moldawien', 'MD'] },
+    'UA': { name: 'Ukraine', coordinates: [31.1656, 48.3794], aliases: ['Ukraine', 'UA'] },
+    'BY': { name: 'Belarus', coordinates: [27.9534, 53.7098], aliases: ['Weißrussland', 'BY'] },
+    'BA': { name: 'Bosnia and Herzegovina', coordinates: [17.6791, 43.9159], aliases: ['Bosnien und Herzegowina', 'BA'] },
+    'ME': { name: 'Montenegro', coordinates: [19.3744, 42.7087], aliases: ['Montenegro', 'ME'] },
+    'XK': { name: 'Kosovo', coordinates: [20.902, 42.6026], aliases: ['Kosovo', 'XK'] },
+    'LI': { name: 'Liechtenstein', coordinates: [9.5554, 47.166], aliases: ['Liechtenstein', 'LI'] },
+    'VA': { name: 'Vatican City', coordinates: [12.4534, 41.9029], aliases: ['Vatikanstadt', 'VA'] },
+    'SM': { name: 'San Marino', coordinates: [12.4578, 43.9424], aliases: ['San Marino', 'SM'] },
+    'AD': { name: 'Andorra', coordinates: [1.5211, 42.5063], aliases: ['Andorra', 'AD'] },
+    'MC': { name: 'Monaco', coordinates: [7.4128, 43.7384], aliases: ['Monaco', 'MC'] }
 };
 
 function checkEnter(event) {
@@ -215,11 +250,18 @@ async function getEnergyData() {
 
 
 function addCountryMarker(coordinates) {
-    // Create a new marker at the center of the country
-    currentMarker = new mapboxgl.Marker({ color: 'red' })
-        .setLngLat(coordinates)
-        .addTo(map);
+    // Create a custom marker element
+    const markerElement = document.createElement('div');
+    markerElement.className = 'custom-marker';
+
+    // Create the Mapbox marker and attach it to the map
+    currentMarker = new mapboxgl.Marker({
+        element: markerElement
+    })
+    .setLngLat(coordinates)
+    .addTo(map);
 }
+
 
 document.querySelector(".text-animation h1").innerHTML = 
     document.querySelector(".text-animation h1").textContent.replace(/./g, "<span>$&</span>");
