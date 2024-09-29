@@ -262,14 +262,6 @@ canvas {
     font-family: 'Lato', sans-serif;
     display: none; /* Initially hidden until loaded */
 }
-
-#populationText {
-    color: rgb(0, 0, 0); /* Text color */
-    font-family: 'Lato', sans-serif;
-    font-style: normal; /* Style for the capital name */
-    display: none; /* Initially hidden until loaded */
-}
-
 /* Marker styling with circular wave animation */
 .custom-marker {
     width: 20px;
@@ -358,15 +350,6 @@ canvas {
     margin-bottom: 10px;
 }
 
-/* Population text styling */
-.custom-hello, .custom-population {
-    color: rgb(0, 0, 0);
-    font-family: 'Lato', sans-serif;
-    font-style: bold;
-    display: none;
-    font-size: 18px;
-    margin-bottom: 5px;
-}
 
 /* Additional styling to control text arrangement */
 .custom-text-container p {
@@ -400,3 +383,13 @@ canvas {
     display: none;  /* Wird erst sichtbar, wenn geladen */
 }
 
+#countryNameText {
+    font-size: 25px; /* Increase font size */
+}
+
+.population-style {
+    font-weight: bold; /* Fettgedruckter Text */
+    font-size: 18px; /* Größere Schriftgröße */
+    color: #000000; /* Blaue Textfarbe */
+    margin-top: 10px; /* Etwas Abstand nach oben */
+}

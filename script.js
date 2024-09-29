@@ -250,7 +250,11 @@ async function getEnergyData() {
 
         // Setze die Bevölkerung und die Hauptstadttexte
         const population = populationJson.data.populationCounts[populationJson.data.populationCounts.length - 1].value;
-        document.getElementById('populationText').innerText = `${population.toLocaleString()} Einwohner`;
+        document.getElementById('populationText').innerText = `${population.toLocaleString()}`;
+        
+        // Füge die Klasse für den Population-Text hinzu
+        document.getElementById('populationText').classList.add('population-style');
+        
 
         const capitalTranslation = countryData[countryCode].capitalTranslation || 'Unbekannt';
         document.getElementById('capitalLabel').innerText = 'Hauptstadt:';
