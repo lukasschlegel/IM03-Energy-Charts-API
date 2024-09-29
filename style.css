@@ -25,7 +25,7 @@ html, body {
     position: absolute;
     top: 25%;
     left: 50%;
-    width: 45%;
+    width: 49%;
     transform: translate(-50%, -50%); /* Zentriert das Element horizontal und vertikal */
     z-index: 1;
     background-color: rgba(255, 255, 255, 0.0); /* Halbtransparenter Hintergrund */
@@ -35,13 +35,31 @@ html, body {
     border-radius: 18px;
 }
 #countryInput {
-    position: relative;
-    width: 80%;
+    width: 100%;
+    padding: 10px 40px 10px 20px;
     border-radius: 18px;
+    background-color: #bae4f5; /* Set the background to black */
+    border: 2px solid; /* Make the border thicker */
+    border-color: #00acee; /* Match the color of the glowing h1 text */
+    color: white; /* Set the text color to white */
+    font-size: 16px;
+    box-sizing: border-box;
+    outline: none;
+    box-shadow: 0 0 5px #00acee, 0 0 5px #00acee, 0 0 30px #00acee; /* Permanent glowing effect */
 }
 
 #suchen {
-    border-radius: 18px;
+    position: absolute;
+    right: 10px;
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    outline: none;
+}
+
+#suchen img {
+    width: 20px;
+    height: 20px;
 }
 
 #form-container {
@@ -194,4 +212,22 @@ canvas {
         color: #111;
         text-shadow: none;
     }
+}
+
+#form-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 80%;
+    margin: 0 auto;
+    position: relative;
+}
+
+#countryInput {
+    width: 100%;
+    padding: 10px 40px 10px 20px;
+    border-radius: 18px;
+    border: 1px solid #ccc;
+    font-size: 16px;
+    box-sizing: border-box;
 }

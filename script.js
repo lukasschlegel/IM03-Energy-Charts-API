@@ -101,6 +101,13 @@ const countryData = {
     'PT': { name: 'Portugal', coordinates: [-8.2245, 39.3999], aliases: ['Portugal', 'PT'] }  
 };
 
+function checkEnter(event) {
+    // Check if the key pressed is "Enter"
+    if (event.key === "Enter") {
+        getEnergyData();  // Call the search function
+    }
+}
+
 let currentMarker = null;  // Store the current marker
 
 async function getEnergyData() {

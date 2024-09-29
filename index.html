@@ -26,9 +26,13 @@
     </div>
     
     <div id="content">
-        <input type="text" id="countryInput" placeholder="Suche dein Land und finde heraus, wieviel Strom es verbraucht....*">
-        <button id="suchen" onclick="getEnergyData()">Suchen</button>
-    </div>
+        <div id="form-container">
+            <input type="text" id="countryInput" placeholder="Suche dein Land und finde heraus, wieviel Strom es verbraucht...*" onkeydown="checkEnter(event)">
+            <button id="suchen" onclick="getEnergyData()">
+                <img src="img/icon_lupe.webp" alt="Lupe" style="width: 20px; height: 20px;">
+            </button>
+        </div>
+    </div>    
 
 <!-- Text Container for "Einwohnerzahl" -->
 <div id="text-container" style="display: none;">
