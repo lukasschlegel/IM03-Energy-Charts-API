@@ -6,8 +6,8 @@
     <title>Stromfresser - Wieviel Strom braucht dein Land?</title>
     <link rel="stylesheet" href="style.css"/>
 
-<link href="https://api.mapbox.com/mapbox-gl-js/v2.11.0/mapbox-gl.css" rel="stylesheet">
-<script src="https://api.mapbox.com/mapbox-gl-js/v2.11.0/mapbox-gl.js"></script>
+    <link href="https://api.mapbox.com/mapbox-gl-js/v2.11.0/mapbox-gl.css" rel="stylesheet">
+    <script src="https://api.mapbox.com/mapbox-gl-js/v2.11.0/mapbox-gl.js"></script>
 </head>
 
 <body>
@@ -26,9 +26,9 @@
     <div id="content">
         <div id="form-container">
             <input type="text" id="countryInput" placeholder="Suche dein Land und finde heraus, wieviel Strom es verbraucht...*" onkeydown="checkEnter(event)">
-            <button id="suchen" onclick="getEnergyData()">
-                <img id="iconLupe" src="img/icon_lupe.webp" alt="Lupe">
-            </button>
+                <button id="suchen" onclick="getEnergyData()">
+                    <img id="iconLupe" src="img/icon_lupe.webp" alt="Lupe">
+                </button>
         </div>
         <div id="errorMessage" class="error-message" style="display: none;">Dieses Land konnte nicht gefunden werden.</div>
     </div>   
