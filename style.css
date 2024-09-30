@@ -453,7 +453,7 @@ body.blended:before {
     padding: 20px;
     border-radius: 10px;
     text-align: center;
-    animation: glow 3.5s ease-in-out infinite;
+    text-shadow: 0 0 10px #00acee, 0 0 50px #00acee, 0 0 80px #00acee;
     z-index: 1;
 }
 
