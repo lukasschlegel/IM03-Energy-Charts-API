@@ -191,7 +191,7 @@ canvas {
 }
 
 .text-animation h1 span {
-    animation: glow 2.5s ease-in-out infinite;
+    animation: glow 3s ease-in-out infinite;
 }
 
 @keyframes glow {
@@ -446,7 +446,7 @@ body.blended:before {
 
 /* Animation für das Leuchten */
 @keyframes glow {
-    50%, 100% {
+    0%, 100% {
         color: #eee;
         text-shadow: 0 0 10px #00acee, 0 0 50px #00acee, 0 0 80px #00acee;
     }
@@ -455,4 +455,22 @@ body.blended:before {
         text-shadow: none;
     }
 }
+
+/* Standardstil für das Bild */
+.stecker-icon {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    z-index: 100;
+    width: 35px;  /* Größe des Icons */
+    height: auto;
+    cursor: pointer;
+    filter: drop-shadow(0 0 10px rgba(0, 172, 238, 1)); /* Leuchtet auf den sichtbaren Teil */
+}
+
+/* Glow-Effekt beim Hover */
+.stecker-icon:hover {
+    filter: drop-shadow(0 0 20px rgba(0, 172, 238, 1));
+}
+
 
