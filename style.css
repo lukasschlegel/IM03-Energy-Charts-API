@@ -389,3 +389,7 @@ canvas {
     color: #000000; /* Blaue Textfarbe */
     margin-top: 10px; /* Etwas Abstand nach oben */
 }
+
+.custom-hello {
+    font-size: 18px;
+}
