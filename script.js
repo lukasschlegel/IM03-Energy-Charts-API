@@ -26,30 +26,23 @@ map.on('load', () => {
 });
 
 document.getElementById('torchButton').addEventListener('click', function() {
-    // Toggle the "blended" mode
-    document.body.classList.toggle('blended');
+document.body.classList.toggle('blended');
+document.getElementById('form-container').style.display = 'none';
+document.getElementById('text-container').style.display = 'none';
+document.getElementById('chart-container').style.display = 'none';
+document.getElementById('torchButton').style.display = 'none';
 
-    // Hide the form-container (search bar), text-container, chart-container, and the button itself
-    document.getElementById('form-container').style.display = 'none';
-    document.getElementById('text-container').style.display = 'none';
-    document.getElementById('chart-container').style.display = 'none';
-    document.getElementById('torchButton').style.display = 'none'; // Hide the "Nicht klicken" button
-
-    // Remove the blinking animation from all span elements inside the h1
     const stromfresserTextSpans = document.querySelectorAll('.text-animation h1 span');
     stromfresserTextSpans.forEach(span => {
-        span.style.animation = 'none'; // Disable the glow animation for each span
+        span.style.animation = 'none';
     });
 
-    // Remove the marker from the map if it exists
     if (currentMarker) {
-        currentMarker.remove(); // Remove the marker from the map
-        currentMarker = null;   // Reset the marker variable
+        currentMarker.remove();
+        currentMarker = null;
     }
 });
 
-
-// If in torchlight mode, track the mouse position
 window.addEventListener('mousemove', function(e) {
     if (document.body.classList.contains('blended')) {
         document.documentElement.style.setProperty('--pointerX', e.clientX + 'px');
@@ -58,11 +51,11 @@ window.addEventListener('mousemove', function(e) {
 });
 
 function renderChart() {
-    document.getElementById('chart-container').style.display = 'block';  // Show the chart
+    document.getElementById('chart-container').style.display = 'block';
 
-    const nuclearData = 2872.6; // Sample nuclear power data
-    const hydroRunOfRiverData = 1525.8; // Sample hydro run-of-river data
-    const windOnshoreData = 13.5; // Sample wind onshore data
+    const nuclearData = 2872.6;
+    const hydroRunOfRiverData = 1525.8;
+    const windOnshoreData = 13.5;
 
     const labels = ['Nuclear Power Generation', 'Hydro Run-of-River', 'Wind Onshore'];
     
@@ -108,7 +101,6 @@ function renderChart() {
         }
     };
 
-    // Clear the previous chart instance (if any) and re-render the chart
     const ctx = document.getElementById('myChart').getContext('2d');
     if (window.myChartInstance) {
         window.myChartInstance.destroy();
@@ -165,13 +157,12 @@ const countryData = {
 };
 
 function checkEnter(event) {
-    // Check if the key pressed is "Enter"
     if (event.key === "Enter") {
-        getEnergyData();  // Call the search function
+        getEnergyData();
     }
 }
 
-let currentMarker = null;  // Store the current marker
+let currentMarker = null;
 
 async function getEnergyData() {
     const countryInput = document.getElementById('countryInput').value.trim().toLowerCase(); 
@@ -310,13 +301,10 @@ async function getEnergyData() {
     }
 }
 
-
 function addCountryMarker(coordinates) {
-    // Create a custom marker element
     const markerElement = document.createElement('div');
     markerElement.className = 'custom-marker';
 
-    // Create the Mapbox marker and attach it to the map
     currentMarker = new mapboxgl.Marker({
         element: markerElement
     })
