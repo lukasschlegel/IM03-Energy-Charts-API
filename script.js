@@ -25,12 +25,12 @@ map.on('load', () => {
     });
 });
 
-document.getElementById('torchButton').addEventListener('click', function() {
-document.body.classList.toggle('blended');
-document.getElementById('form-container').style.display = 'none';
-document.getElementById('text-container').style.display = 'none';
-document.getElementById('chart-container').style.display = 'none';
-document.getElementById('torchButton').style.display = 'none';
+document.getElementById('steckerIcon').addEventListener('click', function() {
+    document.body.classList.toggle('blended');
+    document.getElementById('form-container').style.display = 'none';
+    document.getElementById('text-container').style.display = 'none';
+    document.getElementById('chart-container').style.display = 'none';
+    document.getElementById('steckerIcon').style.display = 'none';
 
     const stromfresserTextSpans = document.querySelectorAll('.text-animation h1 span');
     stromfresserTextSpans.forEach(span => {
