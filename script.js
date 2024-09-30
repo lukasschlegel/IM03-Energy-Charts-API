@@ -25,30 +25,6 @@ map.on('load', () => {
     });
 });
 
-document.getElementById('steckerIcon').addEventListener('click', function() {
-    document.body.classList.toggle('blended');
-    document.getElementById('form-container').style.display = 'none';
-    document.getElementById('text-container').style.display = 'none';
-    document.getElementById('chart-container').style.display = 'none';
-    document.getElementById('steckerIcon').style.display = 'none';
-
-    const stromfresserTextSpans = document.querySelectorAll('.text-animation h1 span');
-    stromfresserTextSpans.forEach(span => {
-        span.style.animation = 'none';
-    });
-
-    if (currentMarker) {
-        currentMarker.remove();
-        currentMarker = null;
-    }
-});
-
-window.addEventListener('mousemove', function(e) {
-    if (document.body.classList.contains('blended')) {
-        document.documentElement.style.setProperty('--pointerX', e.clientX + 'px');
-        document.documentElement.style.setProperty('--pointerY', e.clientY + 'px');
-    }
-});
 
 function renderChart() {
     document.getElementById('chart-container').style.display = 'block';
@@ -319,4 +295,42 @@ let spans = document.querySelectorAll(".text-animation h1 span");
 for (let i = 0; i < spans.length; i++) {
     spans[i].style.animationDelay = (i * 250) + "ms";
 }
+
+document.getElementById('steckerIcon').addEventListener('click', function() {
+    // Wechselt die Torch-Funktion (Taschenlampe) für den Mauszeiger
+    document.body.classList.toggle('blended');
+    
+    // Blendet die UI-Elemente aus
+    document.getElementById('form-container').style.display = 'none';
+    document.getElementById('text-container').style.display = 'none';
+    document.getElementById('chart-container').style.display = 'none';
+    document.getElementById('steckerIcon').style.display = 'none';
+
+    const stromfresserTextSpans = document.querySelectorAll('.text-animation h1 span');
+    stromfresserTextSpans.forEach(span => {
+        span.style.animation = 'none';
+    });
+
+    if (currentMarker) {
+        currentMarker.remove();
+        currentMarker = null;
+    }
+
+    // Zeigt das Zitat an
+    const quotePopup = document.getElementById('quotePopup');
+    if (quotePopup.style.display === 'none' || quotePopup.style.display === '') {
+        quotePopup.style.display = 'block';
+    } else {
+        quotePopup.style.display = 'none';
+    }
+});
+
+// Torch-Funktion für die Maus
+window.addEventListener('mousemove', function(e) {
+    if (document.body.classList.contains('blended')) {
+        document.documentElement.style.setProperty('--pointerX', e.clientX + 'px');
+        document.documentElement.style.setProperty('--pointerY', e.clientY + 'px');
+    }
+});
+
 

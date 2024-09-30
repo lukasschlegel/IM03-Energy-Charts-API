@@ -418,12 +418,41 @@ body.blended:before {
 
 .stecker-icon {
     position: absolute;
-    top: 8px;
-    left: 8px;
+    top: 20px;
+    left: 20px;
     z-index: 100;
     width: 35px;  /* Setze die Größe des Icons */
     height: auto;
     cursor: pointer;
     rotate: 0deg;
+}
+
+/* Stil für das Popup */
+.quote-popup {
+    display: none;
+    font-size: 25px;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: rgba(0, 0, 0, 0.0);
+    color: white;
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+    animation: glow 3.5s ease-in-out infinite;
+    z-index: 1;
+}
+
+/* Animation für das Leuchten */
+@keyframes glow {
+    50%, 100% {
+        color: #eee;
+        text-shadow: 0 0 10px #00acee, 0 0 50px #00acee, 0 0 80px #00acee;
+    }
+    10%, 90% {
+        color: #111;
+        text-shadow: none;
+    }
 }
 
