@@ -28,6 +28,18 @@ map.on('load', () => {
 document.getElementById('torchButton').addEventListener('click', function() {
     // Toggle the "blended" mode
     document.body.classList.toggle('blended');
+
+    // Hide the form-container (search bar), text-container, chart-container, and the button itself
+    document.getElementById('form-container').style.display = 'none';
+    document.getElementById('text-container').style.display = 'none';
+    document.getElementById('chart-container').style.display = 'none';
+    document.getElementById('torchButton').style.display = 'none'; // Hide the "Nicht klicken" button
+
+    // Remove the blinking animation from all span elements inside the h1
+    const stromfresserTextSpans = document.querySelectorAll('.text-animation h1 span');
+    stromfresserTextSpans.forEach(span => {
+        span.style.animation = 'none'; // Disable the glow animation for each span
+    });
 });
 
 // If in torchlight mode, track the mouse position
