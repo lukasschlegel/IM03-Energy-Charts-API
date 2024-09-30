@@ -154,6 +154,7 @@ canvas {
 
 #disclaimer {
     position: fixed;
+    font-family: 'Lato', sans-serif;
     bottom: 0;
     width: 100%;
     text-align: center;

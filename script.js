@@ -198,6 +198,7 @@ async function getEnergyData() {
         // Zeige die Fehlermeldung an, wenn das Land nicht gefunden wurde
         document.getElementById('errorMessage').style.display = 'block';
         document.getElementById('loadingPlaceholder').style.display = 'none'; // Verstecke den Lade-Platzhalter, wenn das Land nicht gefunden wurde
+        document.getElementById('text-container').style.display = 'none'; // Verstecke den Textcontainer komplett
         return;
     }
 
@@ -286,6 +287,7 @@ async function getEnergyData() {
     } catch (error) {
         alert("Fehler beim Abrufen der Daten: " + error.message);
         document.getElementById('loadingPlaceholder').style.display = 'none'; // Verstecke den Lade-Platzhalter bei einem Fehler
+        document.getElementById('text-container').style.display = 'none'; // Verstecke den gesamten Textcontainer bei einem Fehler
     }
 }
 
@@ -302,7 +304,6 @@ function addCountryMarker(coordinates) {
     .setLngLat(coordinates)
     .addTo(map);
 }
-
 
 document.querySelector(".text-animation h1").innerHTML = 
     document.querySelector(".text-animation h1").textContent.replace(/./g, "<span>$&</span>");
