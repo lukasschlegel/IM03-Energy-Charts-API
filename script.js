@@ -40,7 +40,14 @@ document.getElementById('torchButton').addEventListener('click', function() {
     stromfresserTextSpans.forEach(span => {
         span.style.animation = 'none'; // Disable the glow animation for each span
     });
+
+    // Remove the marker from the map if it exists
+    if (currentMarker) {
+        currentMarker.remove(); // Remove the marker from the map
+        currentMarker = null;   // Reset the marker variable
+    }
 });
+
 
 // If in torchlight mode, track the mouse position
 window.addEventListener('mousemove', function(e) {
