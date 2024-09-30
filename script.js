@@ -164,7 +164,7 @@ async function getEnergyData() {
     // Entferne den Ländernamen, falls er bereits existiert
     const existingCountryNameElement = document.getElementById('countryNameText');
     if (existingCountryNameElement) {
-        existingCountryNameElement.remove();
+        existingCountryNameElement.remove(); // Entferne den bisherigen Ländernamen
     }
 
     // Zeige den Lade-Platzhalter an und verstecke den Textcontainer, bis die Daten geladen sind
