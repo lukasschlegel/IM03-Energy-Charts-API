@@ -418,10 +418,10 @@ body.blended:before {
 
 .stecker-icon {
     position: absolute;
-    top: 0px;
-    left: 0px;
+    top: 10px;
+    left: 10px;
     z-index: 100;
-    width: 70px;  /* Setze die Größe des Icons */
+    width: 35px;  /* Setze die Größe des Icons */
     height: auto;
     cursor: pointer;
     rotate: 0deg;
