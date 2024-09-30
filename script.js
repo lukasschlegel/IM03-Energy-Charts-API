@@ -158,6 +158,9 @@ async function getEnergyData() {
     const countryInput = document.getElementById('countryInput').value.trim().toLowerCase(); 
     let countryCode = null;
 
+    // Verstecke die Fehlermeldung, bevor eine neue Suche durchgeführt wird
+    document.getElementById('errorMessage').style.display = 'none';
+
     // Clear previous marker, chart visibility, flag image, capital text, and country name
     if (currentMarker) {
         currentMarker.remove();
@@ -192,10 +195,14 @@ async function getEnergyData() {
     }
 
     if (!countryCode) {
+        // Zeige die Fehlermeldung an, wenn das Land nicht gefunden wurde
+        document.getElementById('errorMessage').style.display = 'block';
         document.getElementById('loadingPlaceholder').style.display = 'none'; // Verstecke den Lade-Platzhalter, wenn das Land nicht gefunden wurde
-        alert("Land nicht gefunden.");
         return;
     }
+
+    // Verstecke die Fehlermeldung, falls das Land gefunden wird
+    document.getElementById('errorMessage').style.display = 'none';
 
     // Zoome zur Hauptstadt des gewählten Landes
     const capitalCoordinates = countryData[countryCode].capital;
@@ -251,11 +258,7 @@ async function getEnergyData() {
         // Setze die Bevölkerung und die Hauptstadttexte
         const population = populationJson.data.populationCounts[populationJson.data.populationCounts.length - 1].value;
         document.getElementById('populationText').innerHTML = `${population.toLocaleString()}`;
-
-        
-        // Füge die Klasse für den Population-Text hinzu
         document.getElementById('populationText').classList.add('population-style');
-        
 
         const capitalTranslation = countryData[countryCode].capitalTranslation || 'Unbekannt';
         document.getElementById('capitalLabel').innerText = 'Hauptstadt:';
@@ -285,6 +288,7 @@ async function getEnergyData() {
         document.getElementById('loadingPlaceholder').style.display = 'none'; // Verstecke den Lade-Platzhalter bei einem Fehler
     }
 }
+
 
 function addCountryMarker(coordinates) {
     // Create a custom marker element
