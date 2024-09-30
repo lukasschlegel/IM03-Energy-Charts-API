@@ -416,16 +416,29 @@ body.blended:before {
     z-index: 99;
 }
 
+/* Stil für das Bild mit Glow, das dem Input-Feld ähnelt */
 .stecker-icon {
     position: absolute;
     top: 20px;
     left: 20px;
     z-index: 100;
-    width: 35px;  /* Setze die Größe des Icons */
+    width: 35px;  /* Größe des Icons */
     height: auto;
     cursor: pointer;
-    rotate: 0deg;
+    
+    /* Glow-Effekt */
+    background-color: transparent;
+    filter: drop-shadow(0 0 10px rgba(0, 172, 238, 1)); /* Leuchtet auf den sichtbaren Teil */
+    border-radius: 50%; /* Runde den Schatten, damit es zum Icon passt */
+    transition: transform 0.3s ease, box-shadow 0.3s ease; /* Weiche Animation */
 }
+
+/* Hover-Effekt für das Stecker-Icon */
+.stecker-icon:hover {
+    transform: scale(1.1); /* Vergrößerung bei Hover */
+    filter: drop-shadow(0 0 20px rgba(0, 172, 238, 1));
+}
+
 
 /* Stil für das Popup */
 .quote-popup {
