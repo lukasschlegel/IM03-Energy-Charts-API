@@ -30,10 +30,10 @@ html, body {
     z-index: 1;
     background-color: rgba(255, 255, 255, 0.0); /* Halbtransparenter Hintergrund */
     padding: 20px;
-    /* border-radius: 10px; */
     text-align: center;
     border-radius: 18px;
 }
+
 #countryInput {
     width: 100%;
     padding: 10px 40px 10px 20px;
@@ -220,7 +220,7 @@ canvas {
 
 #text-container {
     position: absolute;
-    top: 60%;
+    top: 53.5%;
     left: 35%;
     transform: translate(-50%, -50%);
     padding: 10px;
@@ -323,10 +323,6 @@ canvas {
     background-color: rgba(255, 255, 255, 0);
     padding: 10px;
     border-radius: 5px;
-}
-
-/* Text for the loading placeholder */
-.custom-loading p {
     margin: 0;
     color: #000;
     font-size: 18px;
