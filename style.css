@@ -57,6 +57,11 @@ html, body {
     outline: none;
 }
 
+#iconLupe {
+    width: 20px; 
+    height: 20px;
+}
+
 #suchen img {
     width: 20px;
     height: 20px;

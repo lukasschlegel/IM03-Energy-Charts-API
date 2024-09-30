@@ -13,12 +13,10 @@
 <body>
     <div id="map"></div>
 
-    <!-- Line Chart Container -->
     <div id="chart-container" style="display: none;">
         <canvas id="myChart"></canvas>
     </div>
 
-    <!-- Add the "Nicht berühren" Button -->
     <button id="torchButton">Nicht klicken</button>
     
     <div class="text-animation">
@@ -29,37 +27,29 @@
         <div id="form-container">
             <input type="text" id="countryInput" placeholder="Suche dein Land und finde heraus, wieviel Strom es verbraucht...*" onkeydown="checkEnter(event)">
             <button id="suchen" onclick="getEnergyData()">
-                <img src="img/icon_lupe.webp" alt="Lupe" style="width: 20px; height: 20px;">
+                <img id="iconLupe" src="img/icon_lupe.webp" alt="Lupe">
             </button>
         </div>
         <div id="errorMessage" class="error-message" style="display: none;">Dieses Land konnte nicht gefunden werden.</div>
     </div>   
 
-<!-- Text Container for "Einwohnerzahl" with flag and loading placeholder -->
-<!-- Text Container for "Einwohnerzahl" with flag and loading placeholder -->
-<div id="text-container" class="custom-text-container">
-    <!-- Placeholder for loading message -->
-    <div id="loadingPlaceholder" class="custom-loading">
-        <p id="loadingText">Infos werden geladen...</p>
+    <div id="text-container" class="custom-text-container">
+        <div id="loadingPlaceholder" class="custom-loading">
+            <p id="loadingText">Infos werden geladen...</p>
+        </div>
+
+        <img id="flagImage" class="custom-flag" src="" alt="Country Flag">
+        <p id="capitalText" class="custom-capital">
+             <span id="capitalLabel">Hauptstadt:</span>
+        </p>    
+        <p id="capitalName" class="capital-name"></p>     
+        <p id="helloText" class="custom-hello">Einwohnerzahl:</p>
+        <p id="populationText" class="custom-population"></p>
     </div>
 
-
-    <!-- Flag and population info (hidden until loaded) -->
-    <img id="flagImage" class="custom-flag" src="" alt="Country Flag">
-    <p id="capitalText" class="custom-capital">
-        <span id="capitalLabel">Hauptstadt:</span>
-    </p>    
-    <p id="capitalName" class="capital-name"></p>  <!-- Neuer Absatz für die Hauptstadt -->      
-    <p id="helloText" class="custom-hello">Einwohnerzahl:</p>
-    <p id="populationText" class="custom-population"></p>
-</div>
-
-
-
-    <!-- New div for the disclaimer text -->
-<div id="disclaimer">
+    <div id="disclaimer">
     *nur europäische Länder. Für einige Länder sind keine Stromdaten verfügbar.
-</div>
+    </div>
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="script.js"></script> 
