@@ -63,7 +63,8 @@ $sql = "INSERT INTO Energy_Charts_API (
     Solar,
     Residualload,
     Renewableshareofgeneration,
-    Renewableshareofload
+    Renewableshareofload,
+    country
 ) VALUES (
     :Crossborderelectricitytrading,
     :nuclear,
@@ -74,7 +75,8 @@ $sql = "INSERT INTO Energy_Charts_API (
     :Solar,
     :Residualload,
     :Renewableshareofgeneration,
-    :Renewableshareofload
+    :Renewableshareofload,
+    :country
 )";
 
 $stmt = $pdo->prepare($sql);
@@ -90,7 +92,8 @@ for ($i = 0; $i < count($data['unix_seconds']); $i++) {
         ':Solar' => $data['production_types'][6]['data'][$i],                             
         ':Residualload' => $data['production_types'][7]['data'][$i],
         ':Renewableshareofgeneration' => $data['production_types'][8]['data'][$i],    
-        ':Renewableshareofload' => $data['production_types'][9]['data'][$i],           
+        ':Renewableshareofload' => $data['production_types'][9]['data'][$i],
+        ':country' => $countryCode  // Länderkürzel hinzufügen  
     ]);
 }
 
