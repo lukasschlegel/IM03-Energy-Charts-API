@@ -27,8 +27,8 @@ function fetchPowerData($countryCode) {
 }
 
 // Liste der Länder
-$countries = ['ch', 'de'];
-// , 'eu', 'all', 'al', 'am', 'at', 'az', 'ba', 'be', 'bg', 'by', 'cy', 'cz', 'dk', 'ee', 'es', 'fi', 'fr', 'ge', 'gr', 'hr', 'hu', 'ie', 'it', 'lt', 'lu', 'lv', 'md', 'me', 'mk', 'mt', 'nie', 'nl', 'no', 'pl', 'pt', 'ro', 'rs', 'ru', 'se', 'sl', 'sk', 'tr', 'ua', 'uk', 'xk'
+$countries = ['ch', 'de', 'fr', 'it', 'at', 'se', 'no', 'fi', 'es', 'pt', 'ie', 'nl', 'be', 'lu'];
+// , 
 
 
 // Schleife über alle Länder
@@ -44,8 +44,6 @@ foreach ($countries as $countryCode) {
         echo "Keine Daten für $countryCode erhalten oder Fehler bei der API-Abfrage.\n";
     }
 }
-
-var_dump($data);
 
 // Establish database connection
 try {
@@ -94,8 +92,6 @@ for ($i = 0; $i < count($data['unix_seconds']); $i++) {
         ':Renewableshareofgeneration' => $data['production_types'][8]['data'][$i],    
         ':Renewableshareofload' => $data['production_types'][9]['data'][$i],           
     ]);
-
-    echo 'success';
 }
 
 echo "Daten erfolgreich in die Datenbank eingefügt.\n";
