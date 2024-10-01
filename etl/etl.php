@@ -27,7 +27,7 @@ function fetchPowerData($countryCode) {
 }
 
 // Liste der Länder
-$countries = ['ch', 'it',];
+$countries = ['ch', 'it', 'de', 'fr', 'at'];
 // , 
 
 
