@@ -1,7 +1,8 @@
 <?php
 
-function fetchEnergyData() {
-    $url = "https://api.energy-charts.info/public_power?country=all";
+// Funktion zum Abrufen der Daten für ein bestimmtes Land
+function fetchPowerData($countryCode) {
+    $url = "https://api.energy-charts.info/public_power?country=" . $countryCode;
 
     // Initialisiert eine cURL-Sitzung
     $ch = curl_init($url);
@@ -19,6 +20,21 @@ function fetchEnergyData() {
     return json_decode($response, true);
 }
 
-// Gibt die Daten zurück, wenn dieses Skript eingebunden ist
-return fetchEnergyData();
+// Liste der Länder-Codes (Beispiele)
+$countries = ['ch', 'de', 'fr', 'at', 'it']; // Hier kannst du die verfügbaren Länder-Codes ergänzen
+
+// Schleife über alle Länder und Daten abrufen
+foreach ($countries as $countryCode) {
+    echo "Daten für Land: $countryCode\n";
+    $data = fetchPowerData($countryCode);
+
+    // Überprüfen, ob Daten abgerufen wurden
+    if ($data) {
+        // Daten anzeigen oder weiterverarbeiten
+        var_dump($data);
+    } else {
+        echo "Fehler beim Abrufen der Daten für $countryCode\n";
+    }
+}
+
 ?>
