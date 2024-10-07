@@ -134,10 +134,10 @@ foreach ($countries as $countryCode) {
 
             echo "<li>Alle Produktionsdaten erfolgreich für $countryCode abgerufen.</li>\n";
         } else {
-            echo "<li>Einige oder alle Produktionsdaten konnten für $countryCode nicht abgerufen werden.</li>\n";
+            echo "<li><span style='color:red;'>Einige oder alle Produktionsdaten konnten für $countryCode nicht abgerufen werden.</span></li>\n";
         }
     } catch (Exception $e) {
-        echo "<li>Fehler beim Abrufen der Stromproduktionsdaten für $countryCode: " . $e->getMessage() . "</li>\n";
+        echo "<li><span style='color:red;'>Fehler beim Abrufen der Stromproduktionsdaten für $countryCode: " . $e->getMessage() . "</span></li>\n";
     }
 
     // Abrufen der Preisdaten
@@ -147,11 +147,11 @@ foreach ($countries as $countryCode) {
             $latestPrice = $priceData['price'][count($priceData['price']) - 1] ?? null;
             echo "<li>Preisdaten erfolgreich für $countryCode abgerufen.</li>\n";
         } else {
-            echo "<li>Preisdaten konnten für $countryCode nicht abgerufen werden.</li>\n";
+            echo "<li><span style='color:red;'>Preisdaten konnten für $countryCode nicht abgerufen werden.</span></li>\n";
             $latestPrice = null;
         }
     } catch (Exception $e) {
-        echo "<li>Fehler beim Abrufen der Preisdaten für $countryCode: " . $e->getMessage() . "</li>\n";
+        echo "<li><span style='color:red;'>Fehler beim Abrufen der Preisdaten für $countryCode: " . $e->getMessage() . "</span></li>\n";
         $latestPrice = null;
     }
 
@@ -172,7 +172,7 @@ foreach ($countries as $countryCode) {
     ])) {
         echo "<li>Alle Daten für $countryCode erfolgreich in die Datenbank eingefügt.</li></ul><br>\n";
     } else {
-        echo "<li>Fehler beim Einfügen der Daten für $countryCode in die Datenbank.</li></ul><br>\n";
+        echo "<li><span style='color:red;'>Fehler beim Einfügen der Daten für $countryCode in die Datenbank.</span></li></ul><br>\n";
     }
 }
 ?>
