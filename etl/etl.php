@@ -1,5 +1,6 @@
 <?php
 require_once 'config.php';
+
 // Funktion zum Abrufen der Daten für ein bestimmtes Land
 function fetchPowerData($countryCode) {
     $url = "https://api.energy-charts.info/public_power?country=" . $countryCode;
@@ -28,31 +29,15 @@ function fetchPowerData($countryCode) {
 
 // Liste der Länder
 $countries = ['ch', 'it', 'de', 'fr', 'at'];
-// , 
-
-
-// Schleife über alle Länder
-foreach ($countries as $countryCode) {
-    echo "Daten für Land: $countryCode\n";
-
-    $data = fetchPowerData($countryCode);
-
-    // Überprüfen, ob Daten abgerufen wurden
-    if ($data) {
-        // var_dump($data['production_types']);
-    } else {
-        echo "Keine Daten für $countryCode erhalten oder Fehler bei der API-Abfrage.\n";
-    }
-}
 
 // Establish database connection
 try {
     $pdo = new PDO($dsn, $username, $password, $options);
 } catch (PDOException $e) {
-die("Connection failed: " . $e->getMessage());
+    die("Connection failed: " . $e->getMessage());
 }
 
-// SQL-Befehl vorbereiten
+// SQL-Befehl vorbereiten (eine Zeile pro Land)
 $sql = "INSERT INTO Energy_Charts_API (
     Crossborderelectricitytrading,
     nuclear,
@@ -80,21 +65,37 @@ $sql = "INSERT INTO Energy_Charts_API (
 )";
 
 $stmt = $pdo->prepare($sql);
-// Daten einfügen (für jeden Timestamp)
-for ($i = 0; $i < count($data['unix_seconds']); $i++) {
-    $stmt->execute([
-        ':Crossborderelectricitytrading' => $data['production_types'][0]['data'][$i], 
-        ':nuclear' => $data['production_types'][1]['data'][$i],                     
-        ':HydroRunofRiver' => $data['production_types'][2]['data'][$i],                 
-        ':Hydrowaterreservoir' => $data['production_types'][3]['data'][$i],              
-        ':Hydropumpedstorage' => $data['production_types'][4]['data'][$i],  
-        ':Windonshore' => $data['production_types'][5]['data'][$i],  
-        ':Solar' => $data['production_types'][6]['data'][$i],                             
-        ':Residualload' => $data['production_types'][7]['data'][$i],
-        ':Renewableshareofgeneration' => $data['production_types'][8]['data'][$i],    
-        ':Renewableshareofload' => $data['production_types'][9]['data'][$i],
-        ':country' => $countryCode  // Länderkürzel hinzufügen  
-    ]);
+
+// Schleife über alle Länder
+foreach ($countries as $countryCode) {
+    echo "Daten für Land: $countryCode\n";
+
+    $data = fetchPowerData($countryCode);
+
+    // Überprüfen, ob Daten abgerufen wurden
+    if ($data) {
+        // Es wird nur die aktuelle Zeit (letzter Eintrag) abgerufen
+        $latestIndex = count($data['unix_seconds']) - 1;
+
+        // Nur die neuesten Daten für jedes Land werden eingefügt (eine Zeile pro Land)
+        $stmt->execute([
+            ':Crossborderelectricitytrading' => $data['production_types'][0]['data'][$latestIndex], 
+            ':nuclear' => $data['production_types'][1]['data'][$latestIndex],                     
+            ':HydroRunofRiver' => $data['production_types'][2]['data'][$latestIndex],                 
+            ':Hydrowaterreservoir' => $data['production_types'][3]['data'][$latestIndex],              
+            ':Hydropumpedstorage' => $data['production_types'][4]['data'][$latestIndex],  
+            ':Windonshore' => $data['production_types'][5]['data'][$latestIndex],  
+            ':Solar' => $data['production_types'][6]['data'][$latestIndex],                             
+            ':Residualload' => $data['production_types'][7]['data'][$latestIndex],
+            ':Renewableshareofgeneration' => $data['production_types'][8]['data'][$latestIndex],    
+            ':Renewableshareofload' => $data['production_types'][9]['data'][$latestIndex],
+            ':country' => $countryCode  // Länderkürzel hinzufügen  
+        ]);
+
+        echo "Daten für $countryCode erfolgreich in die Datenbank eingefügt.\n";
+    } else {
+        echo "Keine Daten für $countryCode erhalten oder Fehler bei der API-Abfrage.\n";
+    }
 }
 
 echo "Daten erfolgreich in die Datenbank eingefügt.\n";
