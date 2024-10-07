@@ -56,6 +56,8 @@ function fetchPriceData($countryCode) {
 // Liste der Länder
 $countries = ['ch', 'it', 'de', 'fr', 'at', 'es', 'pt', 'gb', 'gr'];
 
+$biddingZones = ['CH','IT-North', 'DE-LU', 'FR', 'AT', 'ES', 'PT', 'GB', 'GR'];
+
 // Establish database connection
 try {
     $pdo = new PDO($dsn, $username, $password, $options);
@@ -96,7 +98,7 @@ $stmt = $pdo->prepare($sql);
 
 // Schleife über alle Länder
 foreach ($countries as $countryCode) {
-    echo "Daten für Land: <strong>$countryCode</strong> \n";
+    echo "Daten für Land: <strong>$countryCode</strong>\n";
 
     // Initialisiere Standardwerte als null
     $productionData = [
@@ -129,22 +131,32 @@ foreach ($countries as $countryCode) {
             $productionData['Residualload'] = $data['production_types'][7]['data'][$latestIndex] ?? null;
             $productionData['Renewableshareofgeneration'] = $data['production_types'][8]['data'][$latestIndex] ?? null;
             $productionData['Renewableshareofload'] = $data['production_types'][9]['data'][$latestIndex] ?? null;
+
+            echo "<li>Alle Produktionsdaten erfolgreich für $countryCode abgerufen.</li>\n";
+        } else {
+            echo "<li>Einige oder alle Produktionsdaten konnten für $countryCode nicht abgerufen werden.</li>\n";
         }
     } catch (Exception $e) {
-        echo "Fehler beim Abrufen der Stromproduktionsdaten für $countryCode: " . $e->getMessage();
+        echo "<li>Fehler beim Abrufen der Stromproduktionsdaten für $countryCode: " . $e->getMessage() . "</li>\n";
     }
 
     // Abrufen der Preisdaten
     try {
         $priceData = fetchPriceData($countryCode);
-        $latestPrice = $priceData['price'][count($priceData['price']) - 1] ?? null;
+        if ($priceData && isset($priceData['price'])) {
+            $latestPrice = $priceData['price'][count($priceData['price']) - 1] ?? null;
+            echo "<li>Preisdaten erfolgreich für $countryCode abgerufen.</li>\n";
+        } else {
+            echo "<li>Preisdaten konnten für $countryCode nicht abgerufen werden.</li>\n";
+            $latestPrice = null;
+        }
     } catch (Exception $e) {
-        echo "Fehler beim Abrufen der Preisdaten für $countryCode: " . $e->getMessage();
+        echo "<li>Fehler beim Abrufen der Preisdaten für $countryCode: " . $e->getMessage() . "</li>\n";
         $latestPrice = null;
     }
 
     // Daten in die Datenbank einfügen, selbst wenn keine Produktionsdaten vorhanden sind
-    $stmt->execute([
+    if ($stmt->execute([
         ':Crossborderelectricitytrading' => $productionData['Crossborderelectricitytrading'],
         ':nuclear' => $productionData['nuclear'],
         ':HydroRunofRiver' => $productionData['HydroRunofRiver'],
@@ -157,8 +169,10 @@ foreach ($countries as $countryCode) {
         ':Renewableshareofload' => $productionData['Renewableshareofload'],
         ':country' => $countryCode,  // Länderkürzel hinzufügen
         ':price' => $latestPrice
-    ]);
-
-    echo "Daten für $countryCode erfolgreich in die Datenbank eingefügt.<br><br>\n";
+    ])) {
+        echo "<li>Alle Daten für $countryCode erfolgreich in die Datenbank eingefügt.</li></ul><br>\n";
+    } else {
+        echo "<li>Fehler beim Einfügen der Daten für $countryCode in die Datenbank.</li></ul><br>\n";
+    }
 }
 ?>
