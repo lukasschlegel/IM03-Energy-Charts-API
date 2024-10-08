@@ -269,10 +269,13 @@ async function getEnergyData() {
     // Verstecke die Fehlermeldung, falls das Land gefunden wird
     document.getElementById('errorMessage').style.display = 'none';
 
-    // Zoome zur Hauptstadt des gewählten Landes
+    // Berechne den neuen Breitengrad für den Marker (10% höher)
     const capitalCoordinates = countryData[countryCode].capital;
+    const adjustedLatitude = capitalCoordinates[1] - 1.2 * (map.getBounds().getNorth() - map.getBounds().getSouth()) / 100;
+
+    // Zoome zur Hauptstadt des gewählten Landes und verschiebe den Marker um 10% nach oben
     map.flyTo({
-        center: capitalCoordinates,
+        center: [capitalCoordinates[0], adjustedLatitude], // Longitude bleibt gleich, Latitude wird angepasst
         zoom: 5.5,
         essential: true
     });
@@ -280,9 +283,8 @@ async function getEnergyData() {
     // Füge einen Marker zur Hauptstadt hinzu
     addCountryMarker(capitalCoordinates);
 
-// Zeige das Diagramm für alle Länder
+    // Zeige das Diagramm für alle Länder
     renderChart(countryCode);
-
 
     // Lade die Bevölkerungs- und Flaggendaten
     try {
@@ -311,7 +313,7 @@ async function getEnergyData() {
         const [populationData, flagData] = await Promise.all([populationResponse, flagResponse]);
 
         const populationJson = await populationData.json();
-        const flagJson = await flagData.json();
+        const flagJson = await flagResponse.json();
 
         if (populationJson.error || !populationJson.data || flagJson.error || !flagJson.data) {
             alert("Daten konnten nicht gefunden werden.");
