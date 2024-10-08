@@ -30,7 +30,7 @@ async function renderChart(countryCode) {
     const chartError = document.createElement('div');
     chartError.id = 'chartError';
     chartError.style.display = 'none';
-    chartError.innerText = 'Für dieses Land sind keine Stromdaten verfügbar.';
+    chartError.innerText = 'Für dieses Land sind zurzeit keine Daten verfügbar.';
 
     if (!document.getElementById('chartError')) {
         chartContainer.appendChild(chartError);
@@ -69,33 +69,37 @@ async function renderChart(countryCode) {
             return formattedTime;
         });
 
-        const nuclearData = filteredEnergyData.map(dataPoint => dataPoint.nuclear || 0);
-        const hydroRunOfRiverData = filteredEnergyData.map(dataPoint => dataPoint.HydroRunofRiver || 0);
-        const windOnshoreData = filteredEnergyData.map(dataPoint => dataPoint.Windonshore || 0);
+        // Hier bleiben null oder undefined Werte bestehen, sodass sie als Lücke angezeigt werden
+        const nuclearData = filteredEnergyData.map(dataPoint => dataPoint.nuclear !== null && dataPoint.nuclear !== undefined ? dataPoint.nuclear.toFixed(0) : null);
+        const hydroRunOfRiverData = filteredEnergyData.map(dataPoint => dataPoint.HydroRunofRiver !== null && dataPoint.HydroRunofRiver !== undefined ? dataPoint.HydroRunofRiver.toFixed(0) : null);
+        const windOnshoreData = filteredEnergyData.map(dataPoint => dataPoint.Windonshore !== null && dataPoint.Windonshore !== undefined ? dataPoint.Windonshore.toFixed(0) : null);
 
         const data = {
             labels: timestamps,
             datasets: [
                 {
                     label: 'Atom-Strom (MW)',
-                    data: nuclearData.map(value => value.toFixed(0)),
+                    data: nuclearData,
                     borderColor: 'rgb(75, 192, 192)',
                     fill: false,
-                    tension: 0.1
+                    tension: 0.1,
+                    spanGaps: false // Lücken werden gelassen, wenn Daten fehlen
                 },
                 {
                     label: 'Wasserkraft (MW)',
-                    data: hydroRunOfRiverData.map(value => value.toFixed(0)),
+                    data: hydroRunOfRiverData,
                     borderColor: 'rgb(54, 162, 235)',
                     fill: false,
-                    tension: 0.1
+                    tension: 0.1,
+                    spanGaps: false // Lücken werden gelassen, wenn Daten fehlen
                 },
                 {
                     label: 'Windkraft (MW)',
-                    data: windOnshoreData.map(value => value.toFixed(0)),
+                    data: windOnshoreData,
                     borderColor: 'rgb(255, 99, 132)',
                     fill: false,
-                    tension: 0.1
+                    tension: 0.1,
+                    spanGaps: false // Lücken werden gelassen, wenn Daten fehlen
                 }
             ]
         };
@@ -114,7 +118,7 @@ async function renderChart(countryCode) {
                 maintainAspectRatio: false, // Verhindert das Verzerren des Charts
                 plugins: {
                     legend: {
-                        position: 'right', // Legende links neben dem Graphen
+                        position: 'right', // Legende rechts neben dem Graphen
                         labels: {
                             usePointStyle: true, // Punkte statt Linien für die Legende verwenden
                             pointStyle: 'circle', // Runde Symbole
