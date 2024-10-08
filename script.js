@@ -25,63 +25,97 @@ map.on('load', () => {
     });
 });
 
-
-function renderChart() {
+async function renderChart(countryCode) {
     document.getElementById('chart-container').style.display = 'block';
 
-    const nuclearData = 2872.6;
-    const hydroRunOfRiverData = 1525.8;
-    const windOnshoreData = 13.5;
+    // Fetch energy data from the API
+    try {
+        const response = await fetch(`https://etl.mmp.li/Energy-Charts_API/etl/unload.php?country=${countryCode}`);
+        const energyData = await response.json();
 
-    const labels = ['Nuclear Power Generation', 'Hydro Run-of-River', 'Wind Onshore'];
-    
-    const data = {
-        labels: labels,
-        datasets: [{
-            label: 'Power Generation (MW)',
-            data: [nuclearData, hydroRunOfRiverData, windOnshoreData],
-            fill: false,
-            borderColor: 'rgb(75, 192, 192)',
-            tension: 0.1
-        }]
-    };
+        // Filter data for the last two days
+        const twoDaysAgoTimestamp = Date.now() - 2 * 24 * 60 * 60 * 1000;
+        const recentEnergyData = energyData.filter(dataPoint => new Date(dataPoint.timestamp * 1000) >= twoDaysAgoTimestamp);
 
-    const config = {
-        type: 'line',
-        data: data,
-        options: {
-            responsive: true,
-            plugins: {
-                legend: {
-                    position: 'top',
+        // Extract data for different energy sources and timestamps
+        const timestamps = recentEnergyData.map(dataPoint => new Date(dataPoint.timestamp * 1000).toLocaleString());
+        const nuclearData = recentEnergyData.map(dataPoint => dataPoint.nuclear || 0);
+        const hydroRunOfRiverData = recentEnergyData.map(dataPoint => dataPoint.hydro_run_of_river || 0);
+        const windOnshoreData = recentEnergyData.map(dataPoint => dataPoint.wind_onshore || 0);
+
+        // Labels for the energy sources
+        const labels = ['Nuclear Power', 'Hydro Run-of-River', 'Wind Onshore'];
+
+        // Chart.js data structure
+        const data = {
+            labels: timestamps, // X-axis will be the timestamps
+            datasets: [
+                {
+                    label: 'Nuclear Power (MW)',
+                    data: nuclearData,
+                    borderColor: 'rgb(75, 192, 192)',
+                    fill: false,
+                    tension: 0.1
                 },
-                title: {
-                    display: true,
-                    text: 'Energy Generation by Source (MW)'
+                {
+                    label: 'Hydro Run-of-River (MW)',
+                    data: hydroRunOfRiverData,
+                    borderColor: 'rgb(54, 162, 235)',
+                    fill: false,
+                    tension: 0.1
+                },
+                {
+                    label: 'Wind Onshore (MW)',
+                    data: windOnshoreData,
+                    borderColor: 'rgb(255, 99, 132)',
+                    fill: false,
+                    tension: 0.1
                 }
-            },
-            scales: {
-                x: {
+            ]
+        };
+
+        // Chart.js config
+        const config = {
+            type: 'line',
+            data: data,
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        position: 'top',
+                    },
                     title: {
                         display: true,
-                        text: 'Energy Source'
+                        text: 'Energy Generation by Source (Last Two Days)'
                     }
                 },
-                y: {
-                    title: {
-                        display: true,
-                        text: 'Power Generation (MW)'
+                scales: {
+                    x: {
+                        title: {
+                            display: true,
+                            text: 'Timestamp'
+                        }
+                    },
+                    y: {
+                        title: {
+                            display: true,
+                            text: 'Power Generation (MW)'
+                        }
                     }
                 }
             }
-        }
-    };
+        };
 
-    const ctx = document.getElementById('myChart').getContext('2d');
-    if (window.myChartInstance) {
-        window.myChartInstance.destroy();
+        const ctx = document.getElementById('myChart').getContext('2d');
+        if (window.myChartInstance) {
+            window.myChartInstance.destroy();
+        }
+        window.myChartInstance = new Chart(ctx, config);
+
+    } catch (error) {
+        console.error('Error fetching energy data:', error);
+        alert('Could not load energy data. Please try again later.');
     }
-    window.myChartInstance = new Chart(ctx, config);
 }
 
 const countryData = {
@@ -151,7 +185,6 @@ async function getEnergyData() {
     if (currentMarker) {
         currentMarker.remove();
     }
-    document.getElementById('chart-container').style.display = 'none';
     document.getElementById('text-container').style.display = 'none'; // Verstecke den gesamten Textcontainer
     document.getElementById('flagImage').src = ''; // Clear the flag image
     document.getElementById('flagImage').style.display = 'none'; // Verstecke die Flagge
@@ -202,10 +235,9 @@ async function getEnergyData() {
     // Füge einen Marker zur Hauptstadt hinzu
     addCountryMarker(capitalCoordinates);
 
-    // Zeige das Diagramm nur, wenn die Schweiz ausgewählt wurde
-    if (countryCode === 'CH') {
-        renderChart();
-    }
+// Zeige das Diagramm für alle Länder
+    renderChart(countryCode);
+
 
     // Lade die Bevölkerungs- und Flaggendaten
     try {
