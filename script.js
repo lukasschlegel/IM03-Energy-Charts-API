@@ -30,7 +30,7 @@ async function renderChart(countryCode) {
     const chartError = document.createElement('div');
     chartError.id = 'chartError';
     chartError.style.display = 'none';
-    chartError.innerText = 'Für dieses Land sind zurzeit keine Daten verfügbar.';
+    chartError.innerText = 'Für dieses Land sind keine Stromdaten verfügbar.';
 
     if (!document.getElementById('chartError')) {
         chartContainer.appendChild(chartError);
