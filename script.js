@@ -32,16 +32,26 @@ async function renderChart(countryCode) {
     try {
         const response = await fetch(`https://etl.mmp.li/Energy-Charts_API/etl/unload.php?country=${countryCode}`);
         const energyData = await response.json();
+        console.log(energyData);
+        console.log(countryCode);
 
-        // Filter data for the last two days
-        const twoDaysAgoTimestamp = Date.now() - 2 * 24 * 60 * 60 * 1000;
-        const recentEnergyData = energyData.filter(dataPoint => new Date(dataPoint.timestamp * 1000) >= twoDaysAgoTimestamp);
+        const energyDataArray = energyData[countryCode.toLowerCase()];
+        console.log(energyDataArray);
+
+        if (!energyDataArray) {
+            throw new Error('No data available for the selected country.');
+        }
+
+        // // Filter data for the last two days
+        // const twoDaysAgoTimestamp = Date.now() - 2 * 24 * 60 * 60 * 1000;
+        // const recentEnergyData = energyData.filter(dataPoint => new Date(dataPoint.timestamp * 1000) >= twoDaysAgoTimestamp);
 
         // Extract data for different energy sources and timestamps
-        const timestamps = recentEnergyData.map(dataPoint => new Date(dataPoint.timestamp * 1000).toLocaleString());
-        const nuclearData = recentEnergyData.map(dataPoint => dataPoint.nuclear || 0);
-        const hydroRunOfRiverData = recentEnergyData.map(dataPoint => dataPoint.hydro_run_of_river || 0);
-        const windOnshoreData = recentEnergyData.map(dataPoint => dataPoint.wind_onshore || 0);
+        const timestamps = energyDataArray.map(dataPoint => new Date(dataPoint.timestamp).toLocaleString());
+        const nuclearData = energyDataArray.map(dataPoint => dataPoint.nuclear || 0);
+        const hydroRunOfRiverData = energyDataArray.map(dataPoint => dataPoint.HydroRunofRiver || 0);
+        const windOnshoreData = energyDataArray.map(dataPoint => dataPoint.Windonshore || 0);
+
 
         // Labels for the energy sources
         const labels = ['Nuclear Power', 'Hydro Run-of-River', 'Wind Onshore'];

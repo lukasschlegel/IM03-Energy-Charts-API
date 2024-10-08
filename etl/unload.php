@@ -7,37 +7,60 @@ header('Content-Type: application/json');
 try {
     $pdo = new PDO($dsn, $username, $password, $options);
 
-    // Liste der Länder, für die Daten abgerufen werden sollen
-    $countries = ['CH', 'IT-North', 'DE-LU', 'FR', 'AT', 'ES', 'PT', 'GB', 'GR'];
-    $results = [];
+    // Liste der erlaubten Länderkürzel (in Kleinbuchstaben)
+    $allowedCountries = ['ch', 'it', 'de', 'fr', 'at', 'es', 'pt', 'gb', 'gr'];
 
-    foreach ($countries as $country) {
-        // Bereitet eine SQL-Anfrage vor, um Produktionsdaten für ein bestimmtes Land zu holen, sortiert nach dem neuesten Datum
-        $stmt = $pdo->prepare("
-            SELECT 
-                country,
-                Crossborderelectricitytrading,
-                nuclear,
-                HydroRunofRiver,
-                Hydrowaterreservoir,
-                Hydropumpedstorage,
-                Windonshore,
-                Solar,
-                Residualload,
-                Renewableshareofgeneration,
-                Renewableshareofload,
-                price,
-                timestamp
-            FROM Energy_Charts_API
-            WHERE country = :country
-            ORDER BY timestamp DESC
-        ");
-
-        $stmt->execute([':country' => $country]); // Führt die vorbereitete Anfrage mit dem Länderkürzel als Parameter aus
-        $results[$country] = $stmt->fetchAll(PDO::FETCH_ASSOC); // Speichert die Ergebnisse im Array $results
+    // Überprüfen, ob der Parameter 'country' übergeben wurde
+    if (!isset($_GET['country']) || empty($_GET['country'])) {
+        echo json_encode(['error' => 'Country parameter is missing']);
+        exit();
     }
 
-    echo json_encode($results); // Gibt die Produktionsdaten im JSON-Format aus
+    // Hole den übergebenen countryCode und konvertiere ihn in Kleinbuchstaben
+    $countryCode = strtolower($_GET['country']); // Alle Eingaben in Kleinbuchstaben umwandeln
+
+    // Überprüfe, ob das Länderkürzel in der Liste der erlaubten Länderkürzel ist
+    if (!in_array($countryCode, $allowedCountries)) {
+        echo json_encode(['error' => 'Invalid country code']);
+        exit();
+    }
+
+    // Bereitet eine SQL-Anfrage vor, um Produktionsdaten für das gesuchte Land zu holen
+    // Vergleicht den country-Wert in Kleinbuchstaben in der Datenbank
+    $stmt = $pdo->prepare("
+        SELECT 
+            country,
+            Crossborderelectricitytrading,
+            nuclear,
+            HydroRunofRiver,
+            Hydrowaterreservoir,
+            Hydropumpedstorage,
+            Windonshore,
+            Solar,
+            Residualload,
+            Renewableshareofgeneration,
+            Renewableshareofload,
+            price,
+            timestamp
+        FROM Energy_Charts_API
+        WHERE LOWER(country) = :country -- Vergleiche Kleinbuchstaben
+        ORDER BY timestamp DESC
+    ");
+
+    // Führt die vorbereitete Anfrage mit dem Länderkürzel als Parameter aus
+    $stmt->execute([':country' => $countryCode]); // Kleinbuchstaben für DB-Konsistenz
+
+    // Hole die Ergebnisse
+    $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+    if ($results) {
+        // Gibt die Produktionsdaten für das gesuchte Land im JSON-Format aus
+        echo json_encode([$countryCode => $results]);
+    } else {
+        // Falls keine Daten für das Land gefunden wurden, gibt eine Fehlermeldung zurück
+        echo json_encode(['error' => 'No data found for this country']);
+    }
+
 } catch (PDOException $e) {
     echo json_encode(['error' => $e->getMessage()]); // Gibt einen Fehler im JSON-Format aus, falls eine Ausnahme auftritt
 }
