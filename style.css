@@ -140,17 +140,18 @@ body.blended:before {
 
 #chart-container {
     position: absolute;
-    top: 60%;
-    left: 75%;
+    top: 73%;
+    left: 55%;
     transform: translate(-50%, -50%);
     width: 700px;
-    height: 350px;
+    height: 280px;
     background-color: #bae4f5;
     z-index: 1;
     border-radius: 10px;
     padding: 10px;
     box-shadow: 0 0 3px #00acee, 0 0 3px #00acee, 0 0 30px #00acee;
 }
+
 
 canvas {
     width: 100% !important;
@@ -225,8 +226,8 @@ canvas {
 
 #text-container {
     position: absolute;
-    top: 53.5%;
-    left: 35%;
+    top: 73%;
+    left: 15%;
     transform: translate(-50%, -50%);
     padding: 10px;
     background-color: #bae4f5;
@@ -502,5 +503,4 @@ body.blended:before {
     font-weight: bold;
     z-index: 1; /* Ensure it appears above the chart */
 }
-
 
