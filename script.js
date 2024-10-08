@@ -26,21 +26,32 @@ map.on('load', () => {
 });
 
 async function renderChart(countryCode) {
+    const chartContainer = document.getElementById('chart-container');
+    const chartError = document.createElement('div');
+    chartError.id = 'chartError';
+    chartError.style.display = 'none'; // Initially hide the error message
+    chartError.innerText = 'Fehler beim Laden der Daten';
+
+    // Make sure the error message is added only once
+    if (!document.getElementById('chartError')) {
+        chartContainer.appendChild(chartError); // Add the error message div inside the chart div
+    }
+
     document.getElementById('chart-container').style.display = 'block';
 
     // Fetch energy data from the API
     try {
         const response = await fetch(`https://etl.mmp.li/Energy-Charts_API/etl/unload.php?country=${countryCode}`);
         const energyData = await response.json();
-        console.log(energyData);
-        console.log(countryCode);
 
         const energyDataArray = energyData[countryCode.toLowerCase()];
-        console.log(energyDataArray);
 
         if (!energyDataArray) {
             throw new Error('No data available for the selected country.');
         }
+
+        // Hide error message if data is available
+        document.getElementById('chartError').style.display = 'none';
 
         // Get current time and time from 24 hours ago
         const currentTime = new Date();
@@ -144,7 +155,8 @@ async function renderChart(countryCode) {
 
     } catch (error) {
         console.error('Error fetching energy data:', error);
-        alert('Could not load energy data. Please try again later.');
+        // Show the error message when data fetching fails
+        document.getElementById('chartError').style.display = 'flex';
     }
 }
 
