@@ -65,7 +65,7 @@ async function renderChart(countryCode) {
 
         const timestamps = filteredEnergyData.map(dataPoint => {
             const date = new Date(dataPoint.timestamp);
-            const formattedTime = `${date.getHours().toString().padStart(2, '0')}:${date.getMinutes().toString().padStart(2, '0')}`; // Entferne das "Uhr"
+            const formattedTime = `${date.getHours().toString().padStart(2, '0')}:${date.getMinutes().toString().padStart(2, '0')}`;
             return formattedTime;
         });
 
@@ -100,10 +100,11 @@ async function renderChart(countryCode) {
             ]
         };
 
-        // Dynamischer Titel mit Datumsangabe
+        // Dynamischer Titel mit dem Land, das im Suchfeld eingegeben wurde
+        const countryNameInGerman = countryData[countryCode].aliases[0];
         const startDate = oneDayAgo.toLocaleDateString('de-DE');
         const endDate = currentTime.toLocaleDateString('de-DE');
-        const chartTitle = `Stromverbrauch von Deutschland vom ${startDate} bis ${endDate}`;
+        const chartTitle = `Stromverbrauch von ${countryNameInGerman} vom ${startDate} bis ${endDate}`;
 
         const config = {
             type: 'line',
@@ -113,21 +114,29 @@ async function renderChart(countryCode) {
                 maintainAspectRatio: false, // Verhindert das Verzerren des Charts
                 plugins: {
                     legend: {
-                        position: 'top',
+                        position: 'right', // Legende links neben dem Graphen
                         labels: {
+                            usePointStyle: true, // Punkte statt Linien für die Legende verwenden
+                            pointStyle: 'circle', // Runde Symbole
                             color: 'black',
                             font: {
-                                size: 14 // Anpassung der Schriftgröße für die Legende
-                            }
+                                size: 12 // Schriftgröße für die Legende anpassen
+                            },
+                            padding: 10 // Weniger Abstand zwischen den Legenden-Einträgen
                         }
                     },
                     title: {
                         display: true,
-                        text: chartTitle, // Dynamischer Titel
+                        text: chartTitle, // Dynamischer Titel basierend auf dem Land
                         color: 'black',
                         font: {
                             size: 18 // Anpassung der Schriftgröße des Titels
                         }
+                    }
+                },
+                layout: {
+                    padding: {
+                        left: 20 // Platz links für die Legende
                     }
                 },
                 scales: {
@@ -145,6 +154,9 @@ async function renderChart(countryCode) {
                             font: {
                                 size: 12 // Anpassung der Schriftgröße der X-Achsenbeschriftungen
                             }
+                        },
+                        grid: {
+                            display: false // Rasterlinien der X-Achse ausblenden
                         }
                     },
                     y: {
@@ -161,6 +173,10 @@ async function renderChart(countryCode) {
                             font: {
                                 size: 12 // Anpassung der Schriftgröße der Y-Achsenbeschriftungen
                             }
+                        },
+                        grid: {
+                            drawBorder: false, // Keine Umrandung um die Y-Achse
+                            color: 'rgba(0, 0, 0, 0.1)' // Dezente Rasterlinien
                         }
                     }
                 }

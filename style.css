@@ -477,7 +477,7 @@ body.blended:before {
     left: 60%;
     transform: translate(-50%, -50%);
     width: 900px;
-    height: 280px;
+    height: 230px;
     background-color: #bae4f5;
     z-index: 1;
     border-radius: 10px;
