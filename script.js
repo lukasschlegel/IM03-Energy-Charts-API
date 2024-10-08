@@ -61,21 +61,21 @@ async function renderChart(countryCode) {
             labels: timestamps, // X-axis will be the timestamps
             datasets: [
                 {
-                    label: 'Nuclear Power (MW)',
+                    label: 'Atom-Strom (MW)',
                     data: nuclearData,
                     borderColor: 'rgb(75, 192, 192)',
                     fill: false,
                     tension: 0.1
                 },
                 {
-                    label: 'Hydro Run-of-River (MW)',
+                    label: 'Wasserkraft (MW)',
                     data: hydroRunOfRiverData,
                     borderColor: 'rgb(54, 162, 235)',
                     fill: false,
                     tension: 0.1
                 },
                 {
-                    label: 'Wind Onshore (MW)',
+                    label: 'Windkraft (MW)',
                     data: windOnshoreData,
                     borderColor: 'rgb(255, 99, 132)',
                     fill: false,
@@ -96,7 +96,7 @@ async function renderChart(countryCode) {
                     },
                     title: {
                         display: true,
-                        text: 'Energy Generation by Source (Last Two Days)'
+                        text: 'Energieverbrauch nach Produktionstyp'
                     }
                 },
                 scales: {

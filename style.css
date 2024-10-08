@@ -143,7 +143,7 @@ body.blended:before {
     top: 53%;
     left: 75%;
     transform: translate(-50%, -50%);
-    width: 550px;
+    width: 700px;
     height: 250px;
     background-color: #bae4f5;
     z-index: 1;
