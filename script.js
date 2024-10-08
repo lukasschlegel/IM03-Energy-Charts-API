@@ -104,11 +104,15 @@ async function renderChart(countryCode) {
             ]
         };
 
-        // Dynamischer Titel mit dem Land, das im Suchfeld eingegeben wurde
+        // Dynamischer Titel mit dem Land, das im Suchfeld eingegeben wurde, und dem Zeitraum mit Uhrzeit
         const countryNameInGerman = countryData[countryCode].aliases[0];
+
         const startDate = oneDayAgo.toLocaleDateString('de-DE');
+        const startTime = oneDayAgo.toLocaleTimeString('de-DE', { hour: '2-digit', minute: '2-digit' });
         const endDate = currentTime.toLocaleDateString('de-DE');
-        const chartTitle = `Stromverbrauch ${countryNameInGerman} vom ${startDate} bis ${endDate}`;
+        const endTime = currentTime.toLocaleTimeString('de-DE', { hour: '2-digit', minute: '2-digit' });
+
+        const chartTitle = `Stromverbrauch vom ${startDate} (${startTime} Uhr) bis ${endDate} (${endTime} Uhr)`;
 
         const config = {
             type: 'line',
@@ -131,7 +135,7 @@ async function renderChart(countryCode) {
                     },
                     title: {
                         display: true,
-                        text: chartTitle, // Dynamischer Titel basierend auf dem Land
+                        text: chartTitle, // Dynamischer Titel mit Datum und Uhrzeit
                         color: 'black',
                         font: {
                             size: 18 // Anpassung der Schriftgröße des Titels
@@ -197,6 +201,7 @@ async function renderChart(countryCode) {
         document.getElementById('chartError').style.display = 'flex';
     }
 }
+
 
 const countryData = {
     'DE': { name: 'Germany', coordinates: [10.4515, 51.1657], capital: [13.4050, 52.5200], capitalTranslation: 'Berlin', aliases: ['Deutschland', 'DE'] },
