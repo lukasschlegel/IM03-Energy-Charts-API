@@ -140,11 +140,11 @@ body.blended:before {
 
 #chart-container {
     position: absolute;
-    top: 53%;
+    top: 60%;
     left: 75%;
     transform: translate(-50%, -50%);
     width: 700px;
-    height: 250px;
+    height: 350px;
     background-color: #bae4f5;
     z-index: 1;
     border-radius: 10px;

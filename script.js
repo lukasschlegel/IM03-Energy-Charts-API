@@ -42,23 +42,24 @@ async function renderChart(countryCode) {
             throw new Error('No data available for the selected country.');
         }
 
-        // // Filter data for the last two days
-        // const twoDaysAgoTimestamp = Date.now() - 2 * 24 * 60 * 60 * 1000;
-        // const recentEnergyData = energyData.filter(dataPoint => new Date(dataPoint.timestamp * 1000) >= twoDaysAgoTimestamp);
-
         // Extract data for different energy sources and timestamps
-        const timestamps = energyDataArray.map(dataPoint => new Date(dataPoint.timestamp).toLocaleString());
+        const timestamps = energyDataArray.map(dataPoint => {
+            const date = new Date(dataPoint.timestamp);
+            const year = date.getFullYear().toString().slice(-2); // Get last two digits of the year
+            const formattedDate = `${date.getDate().toString().padStart(2, '0')}.${(date.getMonth() + 1).toString().padStart(2, '0')}.${year} ${date.getHours().toString().padStart(2, '0')}`; // Format as DD.MM.YY HH
+            return formattedDate;
+        });
+
         const nuclearData = energyDataArray.map(dataPoint => dataPoint.nuclear || 0);
         const hydroRunOfRiverData = energyDataArray.map(dataPoint => dataPoint.HydroRunofRiver || 0);
         const windOnshoreData = energyDataArray.map(dataPoint => dataPoint.Windonshore || 0);
-
 
         // Labels for the energy sources
         const labels = ['Nuclear Power', 'Hydro Run-of-River', 'Wind Onshore'];
 
         // Chart.js data structure
         const data = {
-            labels: timestamps, // X-axis will be the timestamps
+            labels: timestamps, // X-axis will be the formatted timestamps (date + hour)
             datasets: [
                 {
                     label: 'Atom-Strom (MW)',
@@ -84,7 +85,7 @@ async function renderChart(countryCode) {
             ]
         };
 
-        // Chart.js config
+        // Chart.js config with black text
         const config = {
             type: 'line',
             data: data,
@@ -93,23 +94,35 @@ async function renderChart(countryCode) {
                 plugins: {
                     legend: {
                         position: 'top',
+                        labels: {
+                            color: 'black' // Set legend text color to black
+                        }
                     },
                     title: {
                         display: true,
-                        text: 'Energieverbrauch nach Produktionstyp'
+                        text: 'Energieverbrauch nach Produktionstyp',
+                        color: 'black' // Set title text color to black
                     }
                 },
                 scales: {
                     x: {
                         title: {
                             display: true,
-                            text: 'Timestamp'
+                            text: 'Datum und Uhrzeit',
+                            color: 'black' // Set x-axis title text color to black
+                        },
+                        ticks: {
+                            color: 'black' // Set x-axis tick labels to black
                         }
                     },
                     y: {
                         title: {
                             display: true,
-                            text: 'Power Generation (MW)'
+                            text: 'Leistung (MW)',
+                            color: 'black' // Set y-axis title text color to black
+                        },
+                        ticks: {
+                            color: 'black' // Set y-axis tick labels to black
                         }
                     }
                 }
