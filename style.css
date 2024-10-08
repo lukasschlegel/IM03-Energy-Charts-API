@@ -389,7 +389,7 @@ body.blended:before {
     top: 20px;
     left: 20px;
     z-index: 100;
-    width: 35px;  /* Größe des Icons */
+    width: 35px;
     height: auto;
     cursor: pointer;
     
@@ -500,4 +500,3 @@ body.blended:before {
     height: auto;
     max-width: 300px;
 }
-
