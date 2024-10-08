@@ -29,23 +29,20 @@ async function renderChart(countryCode) {
     const chartContainer = document.getElementById('chart-container');
     const chartError = document.createElement('div');
     chartError.id = 'chartError';
-    chartError.style.display = 'none'; // Initially hide the error message
+    chartError.style.display = 'none';
     chartError.innerText = 'Für dieses Land sind zurzeit keine Daten verfügbar.';
 
-    // Make sure the error message is added only once
     if (!document.getElementById('chartError')) {
-        chartContainer.appendChild(chartError); // Add the error message div inside the chart div
+        chartContainer.appendChild(chartError);
     }
 
     document.getElementById('chart-container').style.display = 'block';
 
-    // Clear any existing chart
     if (window.myChartInstance) {
-        window.myChartInstance.destroy(); // Destroy existing chart if any
-        window.myChartInstance = null; // Reset chart instance
+        window.myChartInstance.destroy();
+        window.myChartInstance = null;
     }
 
-    // Fetch energy data from the API
     try {
         const response = await fetch(`https://etl.mmp.li/Energy-Charts_API/etl/unload.php?country=${countryCode}`);
         const energyData = await response.json();
@@ -56,38 +53,32 @@ async function renderChart(countryCode) {
             throw new Error('No data available for the selected country.');
         }
 
-        // Hide error message if data is available
         document.getElementById('chartError').style.display = 'none';
 
-        // Get current time and time from 24 hours ago
         const currentTime = new Date();
         const oneDayAgo = new Date(currentTime.getTime() - 24 * 60 * 60 * 1000);
 
-        // Filter data for the last 24 hours
         const filteredEnergyData = energyDataArray.filter(dataPoint => {
             const dataTime = new Date(dataPoint.timestamp);
             return dataTime >= oneDayAgo;
         });
 
-        // Extract data for different energy sources and timestamps
         const timestamps = filteredEnergyData.map(dataPoint => {
             const date = new Date(dataPoint.timestamp);
-            const year = date.getFullYear().toString().slice(-2); // Get last two digits of the year
-            const formattedDate = `${date.getDate().toString().padStart(2, '0')}.${(date.getMonth() + 1).toString().padStart(2, '0')}.${year} ${date.getHours().toString().padStart(2, '0')}`; // Format as DD.MM.YY HH
-            return formattedDate;
+            const formattedTime = `${date.getHours().toString().padStart(2, '0')}:${date.getMinutes().toString().padStart(2, '0')}`; // Entferne das "Uhr"
+            return formattedTime;
         });
 
         const nuclearData = filteredEnergyData.map(dataPoint => dataPoint.nuclear || 0);
         const hydroRunOfRiverData = filteredEnergyData.map(dataPoint => dataPoint.HydroRunofRiver || 0);
         const windOnshoreData = filteredEnergyData.map(dataPoint => dataPoint.Windonshore || 0);
 
-        // Chart.js data structure
         const data = {
-            labels: timestamps, // X-axis will be the formatted timestamps (date + hour)
+            labels: timestamps,
             datasets: [
                 {
                     label: 'Atom-Strom (MW)',
-                    data: nuclearData.map(value => value.toFixed(0)),  // Display whole numbers (no decimals)
+                    data: nuclearData.map(value => value.toFixed(0)),
                     borderColor: 'rgb(75, 192, 192)',
                     fill: false,
                     tension: 0.1
@@ -109,56 +100,80 @@ async function renderChart(countryCode) {
             ]
         };
 
-        // Chart.js config with black text
+        // Dynamischer Titel mit Datumsangabe
+        const startDate = oneDayAgo.toLocaleDateString('de-DE');
+        const endDate = currentTime.toLocaleDateString('de-DE');
+        const chartTitle = `Stromverbrauch von Deutschland vom ${startDate} bis ${endDate}`;
+
         const config = {
             type: 'line',
             data: data,
             options: {
                 responsive: true,
+                maintainAspectRatio: false, // Verhindert das Verzerren des Charts
                 plugins: {
                     legend: {
                         position: 'top',
                         labels: {
-                            color: 'black' // Set legend text color to black
+                            color: 'black',
+                            font: {
+                                size: 14 // Anpassung der Schriftgröße für die Legende
+                            }
                         }
                     },
                     title: {
                         display: true,
-                        text: 'Energieverbrauch der letzten 24 Stunden',
-                        color: 'black' // Set title text color to black
+                        text: chartTitle, // Dynamischer Titel
+                        color: 'black',
+                        font: {
+                            size: 18 // Anpassung der Schriftgröße des Titels
+                        }
                     }
                 },
                 scales: {
                     x: {
                         title: {
                             display: true,
-                            text: 'Datum und Uhrzeit',
-                            color: 'black' // Set x-axis title text color to black
+                            text: 'Uhrzeit (hh:mm)', // X-Achsen Titel angepasst
+                            color: 'black',
+                            font: {
+                                size: 14 // Anpassung der Schriftgröße des X-Achsentitels
+                            }
                         },
                         ticks: {
-                            color: 'black' // Set x-axis tick labels to black
+                            color: 'black',
+                            font: {
+                                size: 12 // Anpassung der Schriftgröße der X-Achsenbeschriftungen
+                            }
                         }
                     },
                     y: {
                         title: {
                             display: true,
                             text: 'Leistung (MW)',
-                            color: 'black' // Set y-axis title text color to black
+                            color: 'black',
+                            font: {
+                                size: 14 // Anpassung der Schriftgröße des Y-Achsentitels
+                            }
                         },
                         ticks: {
-                            color: 'black' // Set y-axis tick labels to black
+                            color: 'black',
+                            font: {
+                                size: 12 // Anpassung der Schriftgröße der Y-Achsenbeschriftungen
+                            }
                         }
                     }
                 }
             }
         };
 
+        // Stelle sicher, dass der Canvas (myChart) eine feste Breite von 900px hat
         const ctx = document.getElementById('myChart').getContext('2d');
+        document.getElementById('myChart').style.width = '900px'; // Setze die Breite des Charts auf 900px
         window.myChartInstance = new Chart(ctx, config);
 
     } catch (error) {
         console.error('Error fetching energy data:', error);
-        // Show the error message when data fetching fails
         document.getElementById('chartError').style.display = 'flex';
     }
 }
