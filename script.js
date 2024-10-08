@@ -42,20 +42,27 @@ async function renderChart(countryCode) {
             throw new Error('No data available for the selected country.');
         }
 
+        // Get current time and time from 24 hours ago
+        const currentTime = new Date();
+        const oneDayAgo = new Date(currentTime.getTime() - 24 * 60 * 60 * 1000);
+
+        // Filter data for the last 24 hours
+        const filteredEnergyData = energyDataArray.filter(dataPoint => {
+            const dataTime = new Date(dataPoint.timestamp);
+            return dataTime >= oneDayAgo;
+        });
+
         // Extract data for different energy sources and timestamps
-        const timestamps = energyDataArray.map(dataPoint => {
+        const timestamps = filteredEnergyData.map(dataPoint => {
             const date = new Date(dataPoint.timestamp);
             const year = date.getFullYear().toString().slice(-2); // Get last two digits of the year
             const formattedDate = `${date.getDate().toString().padStart(2, '0')}.${(date.getMonth() + 1).toString().padStart(2, '0')}.${year} ${date.getHours().toString().padStart(2, '0')}`; // Format as DD.MM.YY HH
             return formattedDate;
         });
 
-        const nuclearData = energyDataArray.map(dataPoint => dataPoint.nuclear || 0);
-        const hydroRunOfRiverData = energyDataArray.map(dataPoint => dataPoint.HydroRunofRiver || 0);
-        const windOnshoreData = energyDataArray.map(dataPoint => dataPoint.Windonshore || 0);
-
-        // Labels for the energy sources
-        const labels = ['Nuclear Power', 'Hydro Run-of-River', 'Wind Onshore'];
+        const nuclearData = filteredEnergyData.map(dataPoint => dataPoint.nuclear || 0);
+        const hydroRunOfRiverData = filteredEnergyData.map(dataPoint => dataPoint.HydroRunofRiver || 0);
+        const windOnshoreData = filteredEnergyData.map(dataPoint => dataPoint.Windonshore || 0);
 
         // Chart.js data structure
         const data = {
@@ -63,21 +70,21 @@ async function renderChart(countryCode) {
             datasets: [
                 {
                     label: 'Atom-Strom (MW)',
-                    data: nuclearData,
+                    data: nuclearData.map(value => value.toFixed(0)),  // Display whole numbers (no decimals)
                     borderColor: 'rgb(75, 192, 192)',
                     fill: false,
                     tension: 0.1
                 },
                 {
                     label: 'Wasserkraft (MW)',
-                    data: hydroRunOfRiverData,
+                    data: hydroRunOfRiverData.map(value => value.toFixed(0)),
                     borderColor: 'rgb(54, 162, 235)',
                     fill: false,
                     tension: 0.1
                 },
                 {
                     label: 'Windkraft (MW)',
-                    data: windOnshoreData,
+                    data: windOnshoreData.map(value => value.toFixed(0)),
                     borderColor: 'rgb(255, 99, 132)',
                     fill: false,
                     tension: 0.1
@@ -100,7 +107,7 @@ async function renderChart(countryCode) {
                     },
                     title: {
                         display: true,
-                        text: 'Energieverbrauch nach Produktionstyp',
+                        text: 'Energieverbrauch der letzten 24 Stunden',
                         color: 'black' // Set title text color to black
                     }
                 },
