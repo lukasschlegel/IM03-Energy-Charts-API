@@ -140,7 +140,7 @@ body.blended:before {
 
 #chart-container {
     position: absolute;
-    top: 70%;
+    top: 73%;
     left: 55%;
     transform: translate(-50%, -50%);
     width: 700px;
@@ -226,7 +226,7 @@ canvas {
 
 #text-container {
     position: absolute;
-    top: 70%;
+    top: 73%;
     left: 15%;
     transform: translate(-50%, -50%);
     padding: 10px;
@@ -238,7 +238,7 @@ canvas {
     font-family: 'Nunito', sans-serif;
     display: none;
     width: auto;
-    height: 280px;
+    height: auto;
     max-width: 300px;
 }
 
