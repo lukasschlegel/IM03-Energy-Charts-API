@@ -104,7 +104,7 @@ async function renderChart(countryCode) {
         const countryNameInGerman = countryData[countryCode].aliases[0];
         const startDate = oneDayAgo.toLocaleDateString('de-DE');
         const endDate = currentTime.toLocaleDateString('de-DE');
-        const chartTitle = `Stromverbrauch von ${countryNameInGerman} vom ${startDate} bis ${endDate}`;
+        const chartTitle = `Stromverbrauch ${countryNameInGerman} vom ${startDate} bis ${endDate}`;
 
         const config = {
             type: 'line',
