@@ -30,7 +30,7 @@ async function renderChart(countryCode) {
     const chartError = document.createElement('div');
     chartError.id = 'chartError';
     chartError.style.display = 'none'; // Initially hide the error message
-    chartError.innerText = 'Fehler beim Laden der Daten';
+    chartError.innerText = 'Für dieses Land sind zurzeit keine Daten verfügbar.';
 
     // Make sure the error message is added only once
     if (!document.getElementById('chartError')) {
@@ -38,6 +38,12 @@ async function renderChart(countryCode) {
     }
 
     document.getElementById('chart-container').style.display = 'block';
+
+    // Clear any existing chart
+    if (window.myChartInstance) {
+        window.myChartInstance.destroy(); // Destroy existing chart if any
+        window.myChartInstance = null; // Reset chart instance
+    }
 
     // Fetch energy data from the API
     try {
@@ -148,9 +154,6 @@ async function renderChart(countryCode) {
         };
 
         const ctx = document.getElementById('myChart').getContext('2d');
-        if (window.myChartInstance) {
-            window.myChartInstance.destroy();
-        }
         window.myChartInstance = new Chart(ctx, config);
 
     } catch (error) {
