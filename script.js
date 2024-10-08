@@ -67,12 +67,11 @@ async function renderChart(countryCode) {
             const date = new Date(dataPoint.timestamp);
             const formattedTime = `${date.getHours().toString().padStart(2, '0')}:${date.getMinutes().toString().padStart(2, '0')}`;
             return formattedTime;
-        });
+        }).reverse(); // Daten umkehren, damit die neuesten rechts erscheinen
 
-        // Hier bleiben null oder undefined Werte bestehen, sodass sie als Lücke angezeigt werden
-        const nuclearData = filteredEnergyData.map(dataPoint => dataPoint.nuclear !== null && dataPoint.nuclear !== undefined ? dataPoint.nuclear.toFixed(0) : null);
-        const hydroRunOfRiverData = filteredEnergyData.map(dataPoint => dataPoint.HydroRunofRiver !== null && dataPoint.HydroRunofRiver !== undefined ? dataPoint.HydroRunofRiver.toFixed(0) : null);
-        const windOnshoreData = filteredEnergyData.map(dataPoint => dataPoint.Windonshore !== null && dataPoint.Windonshore !== undefined ? dataPoint.Windonshore.toFixed(0) : null);
+        const nuclearData = filteredEnergyData.map(dataPoint => dataPoint.nuclear !== null && dataPoint.nuclear !== undefined ? dataPoint.nuclear.toFixed(0) : null).reverse();
+        const hydroRunOfRiverData = filteredEnergyData.map(dataPoint => dataPoint.HydroRunofRiver !== null && dataPoint.HydroRunofRiver !== undefined ? dataPoint.HydroRunofRiver.toFixed(0) : null).reverse();
+        const windOnshoreData = filteredEnergyData.map(dataPoint => dataPoint.Windonshore !== null && dataPoint.Windonshore !== undefined ? dataPoint.Windonshore.toFixed(0) : null).reverse();
 
         const data = {
             labels: timestamps,
@@ -104,7 +103,6 @@ async function renderChart(countryCode) {
             ]
         };
 
-        // Dynamischer Titel mit dem Land, das im Suchfeld eingegeben wurde, und dem Zeitraum mit Uhrzeit
         const countryNameInGerman = countryData[countryCode].aliases[0];
 
         const startDate = oneDayAgo.toLocaleDateString('de-DE');
@@ -191,7 +189,6 @@ async function renderChart(countryCode) {
             }
         };
 
-        // Stelle sicher, dass der Canvas (myChart) eine feste Breite von 900px hat
         const ctx = document.getElementById('myChart').getContext('2d');
         document.getElementById('myChart').style.width = '900px'; // Setze die Breite des Charts auf 900px
         window.myChartInstance = new Chart(ctx, config);
@@ -201,6 +198,7 @@ async function renderChart(countryCode) {
         document.getElementById('chartError').style.display = 'flex';
     }
 }
+
 
 
 const countryData = {
