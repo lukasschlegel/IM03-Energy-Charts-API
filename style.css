@@ -400,6 +400,7 @@ body.blended:before {
     color: #9a9a9a;
     font-size: 18px;
     z-index: 1;
+    padding: 10px;
 }
 
 #chart-container {
@@ -435,15 +436,37 @@ body.blended:before {
     max-width: 300px;
 }
 
-/* Responsive Adjustments for Smaller Screens */
+@media screen and (max-width: 1400px) {
+
+    #chart-container {
+        width: 60%;
+    }
+}
+
 @media screen and (max-width: 768px) {
     #content {
         width: 90%;
         padding: 5vw;
     }
 
-    #text-container, #chart-container {
+    #chart-container {
         width: 90%;
+        left: 50vw;
+        height: 200px;
+    }
+
+    #text-container {
+        height: 160px;
+        left: 22vw;
+        top: 45vh;
+    }
+
+    #countryNameText, #capitalLabel, #capitalName, #helloText, #populationText {
+        font-size: 12px;
+    }
+
+    #flagImage {
+        width: 50px;
     }
 
     #fly {
@@ -456,7 +479,7 @@ body.blended:before {
     }
 
     .text-animation h1 {
-        font-size: 48px;
+        font-size: 43px;
     }
 
     #suchen {
@@ -484,12 +507,8 @@ body.blended:before {
         padding: 7vw;
     }
 
-    #text-container, #chart-container {
-        width: 95%;
-    }
-
     .text-animation h1 {
-        font-size: 36px;
+        font-size: 30px;
     }
 
     input, button {
