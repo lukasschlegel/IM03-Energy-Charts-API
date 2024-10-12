@@ -16,19 +16,20 @@ html, body {
     left: 0;
     bottom: 0;
     right: 0;
-    width: 100%;
-    height: 100%;
+    width: 100vw;
+    height: 100vh;
     z-index: 0;
 }
 
 #content {
     position: absolute;
-    top: 25%;
-    left: 50%;
-    width: 49%;
+    top: 25vh;
+    left: 50vw;
+    width: 50%;
+    max-width: 600px;
     transform: translate(-50%, -50%);
     z-index: 1;
-    background-color: rgba(255, 255, 255, 0.0);
+    background-color: rgba(255, 255, 255, 0);
     padding: 20px;
     text-align: center;
     border-radius: 18px;
@@ -42,15 +43,13 @@ html, body {
     border: 2px solid;
     border-color: #00acee;
     color: rgb(0, 0, 0);
-    font-size: 16px;
-    box-sizing: border-box;
-    outline: none;
+    font-size: 1rem;
     box-shadow: 0 0 3px #00acee, 0 0 3px #00acee, 0 0 30px #00acee;
 }
 
 #suchen {
     position: absolute;
-    right: 10px;
+    right: 20px;
     background-color: transparent;
     border: none;
     cursor: pointer;
@@ -58,41 +57,36 @@ html, body {
 }
 
 #iconLupe {
-    width: 20px; 
-    height: 20px;
-}
-
-#suchen img {
     width: 20px;
     height: 20px;
 }
 
 #form-container {
     display: flex;
-    flex-direction: row;
+    justify-content: center;
     align-items: center;
+    width: 100%;
+    margin: 0 auto;
 }
 
 input, button {
-    padding: 8px;
-    margin: 5px;
-    font-size: 16px;
+    padding: 1vw;
+    margin: 0.5vw;
+    font-size: 1rem;
 }
 
 h1 {
-    margin-bottom: 20px;
+    margin-bottom: 2vh;
 }
 
 #fly {
     display: block;
-    position: relative;
     margin: 0px auto;
     width: 50%;
-    height: 40px;
     padding: 10px;
     border: none;
     border-radius: 3px;
-    font-size: 12px;
+    font-size: 1.5rem;
     text-align: center;
     color: #fff;
     background: #ee8a65;
@@ -128,7 +122,7 @@ body.blended:before {
     position: fixed;
     width: 100%;
     height: 100%;
-    background: radial-gradient(circle 10vmax at var(--pointerX) var(--pointerY), rgba(0,0,0,0) 0%, rgba(0,0,0,0.5) 80%, rgba(0,0,0,0.95) 100%);
+    background: radial-gradient(circle 10vmax at var(--pointerX) var(--pointerY), rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.5) 80%, rgba(0, 0, 0, 0.95) 100%);
     z-index: 99;
 }
 
@@ -158,12 +152,13 @@ canvas {
 #helloText {
     color: rgb(0, 0, 0);
     font-family: 'Lato', sans-serif;
+    display: none;
 }
 
 .text-animation {
     position: absolute;
-    top: 15%;
-    left: 50%;
+    top: 15vh;
+    left: 50vw;
     transform: translate(-50%, -50%);
     text-align: center;
 }
@@ -191,24 +186,6 @@ canvas {
     }
 }
 
-#form-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 80%;
-    margin: 0 auto;
-    position: relative;
-}
-
-#countryInput {
-    width: 100%;
-    padding: 10px 40px 10px 20px;
-    border-radius: 18px;
-    border: 1px solid #ccc;
-    font-size: 16px;
-    box-sizing: border-box;
-}
-
 #flagImage {
     display: none;
     margin: 0 auto;
@@ -228,12 +205,6 @@ canvas {
     margin: 0;
     color: #9a9a9a;
     font-size: 18px;
-}
-
-#helloText {
-    color: rgb(0, 0, 0);
-    font-family: 'Lato', sans-serif;
-    display: none;
 }
 
 .custom-marker {
@@ -270,19 +241,17 @@ canvas {
 
 .custom-text-container {
     position: absolute;
-    top: 60%;
-    left: 35%;
+    top: 75vh;
+    left: 20vw;
     transform: translate(-50%, -50%);
-    padding: 20px;
+    padding: 10px;
     background-color: #bae4f5;
     z-index: 1;
     border-radius: 10px;
     text-align: center;
     box-shadow: 0 0 3px #00acee, 0 0 3px #00acee, 0 0 30px #00acee;
     font-family: 'Nunito', sans-serif;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+    display: none;
     width: auto;
     height: auto;
     max-width: 300px;
@@ -348,8 +317,8 @@ canvas {
 }
 
 .population-style {
-    font-weight: bold; 
-    font-size: 18px; 
+    font-weight: bold;
+    font-size: 18px;
     color: #000000;
     margin-top: 10px;
 }
@@ -383,7 +352,6 @@ body.blended:before {
     z-index: 99;
 }
 
-/* Stil für das Bild mit Glow, das dem Input-Feld ähnelt */
 .stecker-icon {
     position: absolute;
     top: 20px;
@@ -392,22 +360,16 @@ body.blended:before {
     width: 35px;
     height: auto;
     cursor: pointer;
-    
-    /* Glow-Effekt */
-    background-color: transparent;
-    filter: drop-shadow(0 0 10px rgba(0, 172, 238, 1)); /* Leuchtet auf den sichtbaren Teil */
-    border-radius: 50%; /* Runde den Schatten, damit es zum Icon passt */
-    transition: transform 0.3s ease, box-shadow 0.3s ease; /* Weiche Animation */
+    filter: drop-shadow(0 0 10px rgba(0, 172, 238, 1));
+    border-radius: 50%;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-/* Hover-Effekt für das Stecker-Icon */
 .stecker-icon:hover {
-    transform: scale(1.1); /* Vergrößerung bei Hover */
+    transform: scale(1.1);
     filter: drop-shadow(0 0 20px rgba(0, 172, 238, 1));
 }
 
-
-/* Stil für das Popup */
 .quote-popup {
     display: none;
     font-size: 25px;
@@ -424,35 +386,6 @@ body.blended:before {
     z-index: 1;
 }
 
-/* Animation für das Leuchten */
-@keyframes glow {
-    0%, 100% {
-        color: #eee;
-        text-shadow: 0 0 10px #00acee, 0 0 50px #00acee, 0 0 80px #00acee;
-    }
-    10%, 90% {
-        color: #111;
-        text-shadow: none;
-    }
-}
-
-/* Standardstil für das Bild */
-.stecker-icon {
-    position: absolute;
-    top: 20px;
-    left: 20px;
-    z-index: 100;
-    width: 35px;  /* Größe des Icons */
-    height: auto;
-    cursor: pointer;
-    filter: drop-shadow(0 0 10px rgba(0, 172, 238, 1)); /* Leuchtet auf den sichtbaren Teil */
-}
-
-/* Glow-Effekt beim Hover */
-.stecker-icon:hover {
-    filter: drop-shadow(0 0 20px rgba(0, 172, 238, 1));
-}
-
 #chartError {
     position: absolute;
     font-family: 'Lato', sans-serif;
@@ -463,18 +396,19 @@ body.blended:before {
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: rgba(255, 255, 255, 0.0); /* White background with transparency */
+    background-color: rgba(255, 255, 255, 0.0);
     color: #9a9a9a;
     font-size: 18px;
-    z-index: 1; /* Ensure it appears above the chart */
+    z-index: 1;
 }
 
 #chart-container {
     position: absolute;
-    top: 75%;
-    left: 60%;
+    top: 75vh;
+    left: 58vw;
     transform: translate(-50%, -50%);
-    width: 900px;
+    width: 80%;
+    max-width: 900px;
     height: 230px;
     background-color: #bae4f5;
     z-index: 1;
@@ -485,8 +419,8 @@ body.blended:before {
 
 #text-container {
     position: absolute;
-    top: 75%;
-    left: 20%;
+    top: 75vh;
+    left: 18vw;
     transform: translate(-50%, -50%);
     padding: 10px;
     background-color: #bae4f5;
@@ -497,6 +431,86 @@ body.blended:before {
     font-family: 'Nunito', sans-serif;
     display: none;
     width: auto;
-    height: auto;
+    height: autos;
     max-width: 300px;
+}
+
+/* Responsive Adjustments for Smaller Screens */
+@media screen and (max-width: 768px) {
+    #content {
+        width: 90%;
+        padding: 5vw;
+    }
+
+    #text-container, #chart-container {
+        width: 90%;
+    }
+
+    #fly {
+        width: 70%;
+    }
+
+    input, button {
+        padding: 2vw;
+        font-size: 0.9rem;
+    }
+
+    .text-animation h1 {
+        font-size: 48px;
+    }
+
+    #suchen {
+        right: 35px;
+    }
+    
+    .stecker-icon {
+        position: absolute;
+        top: 18px;
+        left: 18px;
+        z-index: 100;
+        width: 25px;
+        height: auto;
+        cursor: pointer;
+        filter: drop-shadow(0 0 10px rgba(0, 172, 238, 1));
+        border-radius: 50%;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+}
+
+/* Further adjustments for very small screens (mobile) */
+@media screen and (max-width: 425px) {
+    #content {
+        width: 95%;
+        padding: 7vw;
+    }
+
+    #text-container, #chart-container {
+        width: 95%;
+    }
+
+    .text-animation h1 {
+        font-size: 36px;
+    }
+
+    input, button {
+        font-size: 0.8rem;
+        padding: 3vw;
+    }
+   
+    #suchen {
+        right: 30px;
+    }
+
+    .stecker-icon {
+        position: absolute;
+        top: 18px;
+        left: 18px;
+        z-index: 100;
+        width: 20px;
+        height: auto;
+        cursor: pointer;
+        filter: drop-shadow(0 0 10px rgba(0, 172, 238, 1));
+        border-radius: 50%;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
 }
