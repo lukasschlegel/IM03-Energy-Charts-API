@@ -456,17 +456,25 @@ body.blended:before {
     }
 
     #text-container {
-        height: 160px;
+        height: auto;
+        width: auto;
+        max-height: 160px;
         left: 22vw;
         top: 45vh;
     }
 
-    #countryNameText, #capitalLabel, #capitalName, #helloText, #populationText {
+    #countryNameText, #capitalLabel, #capitalName, #helloText, #populationText, #capitalText {
         font-size: 12px;
+        margin: 2px;
+    }
+
+    #loadingText {
+        font-size: 8px;
     }
 
     #flagImage {
         width: 50px;
+        margin-bottom: 0px;
     }
 
     #fly {
@@ -531,5 +539,9 @@ body.blended:before {
         filter: drop-shadow(0 0 10px rgba(0, 172, 238, 1));
         border-radius: 50%;
         transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    #quoteText {
+        font-size: 15px;
     }
 }
