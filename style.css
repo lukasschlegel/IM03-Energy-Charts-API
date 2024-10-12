@@ -508,7 +508,6 @@ body.blended:before {
     }
 }
 
-/* Further adjustments for very small screens (mobile) */
 @media screen and (max-width: 425px) {
     #content {
         width: 95%;

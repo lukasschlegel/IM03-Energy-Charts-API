@@ -67,7 +67,7 @@ async function renderChart(countryCode) {
             const date = new Date(dataPoint.timestamp);
             const formattedTime = `${date.getHours().toString().padStart(2, '0')}:${date.getMinutes().toString().padStart(2, '0')}`;
             return formattedTime;
-        }).reverse(); // Daten umkehren, damit die neuesten rechts erscheinen
+        }).reverse();
 
         const nuclearData = filteredEnergyData.map(dataPoint => dataPoint.nuclear !== null && dataPoint.nuclear !== undefined ? dataPoint.nuclear.toFixed(0) : null).reverse();
         const hydroRunOfRiverData = filteredEnergyData.map(dataPoint => dataPoint.HydroRunofRiver !== null && dataPoint.HydroRunofRiver !== undefined ? dataPoint.HydroRunofRiver.toFixed(0) : null).reverse();
@@ -82,7 +82,7 @@ async function renderChart(countryCode) {
                     borderColor: 'rgb(75, 192, 192)',
                     fill: false,
                     tension: 0.1,
-                    spanGaps: false // Lücken werden gelassen, wenn Daten fehlen
+                    spanGaps: false
                 },
                 {
                     label: 'Wasserkraft (MW)',
@@ -90,7 +90,7 @@ async function renderChart(countryCode) {
                     borderColor: 'rgb(54, 162, 235)',
                     fill: false,
                     tension: 0.1,
-                    spanGaps: false // Lücken werden gelassen, wenn Daten fehlen
+                    spanGaps: false
                 },
                 {
                     label: 'Windkraft (MW)',
@@ -98,7 +98,7 @@ async function renderChart(countryCode) {
                     borderColor: 'rgb(255, 99, 132)',
                     fill: false,
                     tension: 0.1,
-                    spanGaps: false // Lücken werden gelassen, wenn Daten fehlen
+                    spanGaps: false
                 }
             ]
         };
@@ -117,52 +117,52 @@ async function renderChart(countryCode) {
             data: data,
             options: {
                 responsive: true,
-                maintainAspectRatio: false, // Verhindert das Verzerren des Charts
+                maintainAspectRatio: false,
                 plugins: {
                     legend: {
-                        position: 'right', // Legende rechts neben dem Graphen
+                        position: 'right',
                         labels: {
-                            usePointStyle: true, // Punkte statt Linien für die Legende verwenden
-                            pointStyle: 'circle', // Runde Symbole
+                            usePointStyle: true,
+                            pointStyle: 'circle',
                             color: 'black',
                             font: {
-                                size: 12 // Schriftgröße für die Legende anpassen
+                                size: 12
                             },
-                            padding: 10 // Weniger Abstand zwischen den Legenden-Einträgen
+                            padding: 10
                         }
                     },
                     title: {
                         display: true,
-                        text: chartTitle, // Dynamischer Titel mit Datum und Uhrzeit
+                        text: chartTitle,
                         color: 'black',
                         font: {
-                            size: 18 // Anpassung der Schriftgröße des Titels
+                            size: 18
                         }
                     }
                 },
                 layout: {
                     padding: {
-                        left: 20 // Platz links für die Legende
+                        left: 20
                     }
                 },
                 scales: {
                     x: {
                         title: {
                             display: true,
-                            text: 'Uhrzeit (hh:mm)', // X-Achsen Titel angepasst
+                            text: 'Uhrzeit (hh:mm)',
                             color: 'black',
                             font: {
-                                size: 14 // Anpassung der Schriftgröße des X-Achsentitels
+                                size: 14
                             }
                         },
                         ticks: {
                             color: 'black',
                             font: {
-                                size: 12 // Anpassung der Schriftgröße der X-Achsenbeschriftungen
+                                size: 12
                             }
                         },
                         grid: {
-                            display: false // Rasterlinien der X-Achse ausblenden
+                            display: false
                         }
                     },
                     y: {
@@ -171,18 +171,18 @@ async function renderChart(countryCode) {
                             text: 'Leistung (MW)',
                             color: 'black',
                             font: {
-                                size: 14 // Anpassung der Schriftgröße des Y-Achsentitels
+                                size: 14
                             }
                         },
                         ticks: {
                             color: 'black',
                             font: {
-                                size: 12 // Anpassung der Schriftgröße der Y-Achsenbeschriftungen
+                                size: 12
                             }
                         },
                         grid: {
-                            drawBorder: false, // Keine Umrandung um die Y-Achse
-                            color: 'rgba(0, 0, 0, 0.1)' // Dezente Rasterlinien
+                            drawBorder: false,
+                            color: 'rgba(0, 0, 0, 0.1)'
                         }
                     }
                 }
@@ -190,7 +190,7 @@ async function renderChart(countryCode) {
         };
 
         const ctx = document.getElementById('myChart').getContext('2d');
-        document.getElementById('myChart').style.width = '900px'; // Setze die Breite des Charts auf 900px
+        document.getElementById('myChart').style.width = '900px';
         window.myChartInstance = new Chart(ctx, config);
 
     } catch (error) {
@@ -198,8 +198,6 @@ async function renderChart(countryCode) {
         document.getElementById('chartError').style.display = 'flex';
     }
 }
-
-
 
 const countryData = {
     'DE': { name: 'Germany', coordinates: [10.4515, 51.1657], capital: [13.4050, 52.5200], capitalTranslation: 'Berlin', aliases: ['Deutschland', 'DE'] },
@@ -261,33 +259,28 @@ async function getEnergyData() {
     const countryInput = document.getElementById('countryInput').value.trim().toLowerCase(); 
     let countryCode = null;
 
-    // Verstecke die Fehlermeldung, bevor eine neue Suche durchgeführt wird
     document.getElementById('errorMessage').style.display = 'none';
 
-    // Clear previous marker, chart visibility, flag image, capital text, and country name
     if (currentMarker) {
         currentMarker.remove();
     }
-    document.getElementById('text-container').style.display = 'none'; // Verstecke den gesamten Textcontainer
-    document.getElementById('flagImage').src = ''; // Clear the flag image
-    document.getElementById('flagImage').style.display = 'none'; // Verstecke die Flagge
-    document.getElementById('helloText').style.display = 'none'; // Verstecke den "Einwohnerzahl"-Text
-    document.getElementById('populationText').style.display = 'none'; // Verstecke den Bevölkerungstext
-    document.getElementById('capitalText').style.display = 'none'; // Verstecke den Hauptstadttext
-    document.getElementById('capitalName').innerText = '';  // Leere den Hauptstadttext
-    document.getElementById('capitalName').style.display = 'none';  // Verstecke den Hauptstadttext
+    document.getElementById('text-container').style.display = 'none';
+    document.getElementById('flagImage').src = '';
+    document.getElementById('flagImage').style.display = 'none';
+    document.getElementById('helloText').style.display = 'none';
+    document.getElementById('populationText').style.display = 'none';
+    document.getElementById('capitalText').style.display = 'none';
+    document.getElementById('capitalName').innerText = '';
+    document.getElementById('capitalName').style.display = 'none';
 
-    // Entferne den Ländernamen, falls er bereits existiert
     const existingCountryNameElement = document.getElementById('countryNameText');
     if (existingCountryNameElement) {
-        existingCountryNameElement.remove(); // Entferne den bisherigen Ländernamen
+        existingCountryNameElement.remove();
     }
 
-    // Zeige den Lade-Platzhalter an und verstecke den Textcontainer, bis die Daten geladen sind
     document.getElementById('loadingPlaceholder').style.display = 'block';
-    document.getElementById('text-container').style.display = 'block'; // Zeige den Textcontainer nach dem Laden der Daten
+    document.getElementById('text-container').style.display = 'block';
 
-    // Suche nach dem Land im Dataset
     for (const code in countryData) {
         const country = countryData[code];
         if (country.name.toLowerCase() === countryInput || country.aliases.some(alias => alias.toLowerCase() === countryInput)) {
@@ -297,17 +290,14 @@ async function getEnergyData() {
     }
 
     if (!countryCode) {
-        // Zeige die Fehlermeldung an, wenn das Land nicht gefunden wurde
         document.getElementById('errorMessage').style.display = 'block';
-        document.getElementById('loadingPlaceholder').style.display = 'none'; // Verstecke den Lade-Platzhalter, wenn das Land nicht gefunden wurde
-        document.getElementById('text-container').style.display = 'none'; // Verstecke den Textcontainer komplett
+        document.getElementById('loadingPlaceholder').style.display = 'none';
+        document.getElementById('text-container').style.display = 'none';
         return;
     }
 
-    // Verstecke die Fehlermeldung, falls das Land gefunden wird
     document.getElementById('errorMessage').style.display = 'none';
 
-    // Zoome zur Hauptstadt des gewählten Landes
     const capitalCoordinates = countryData[countryCode].capital;
     map.flyTo({
         center: capitalCoordinates,
@@ -315,14 +305,10 @@ async function getEnergyData() {
         essential: true
     });
 
-    // Füge einen Marker zur Hauptstadt hinzu
     addCountryMarker(capitalCoordinates);
 
-// Zeige das Diagramm für alle Länder
     renderChart(countryCode);
 
-
-    // Lade die Bevölkerungs- und Flaggendaten
     try {
         const populationApiUrl = 'https://countriesnow.space/api/v0.1/countries/population';
         const populationResponse = await fetch(populationApiUrl, {
@@ -353,11 +339,10 @@ async function getEnergyData() {
 
         if (populationJson.error || !populationJson.data || flagJson.error || !flagJson.data) {
             alert("Daten konnten nicht gefunden werden.");
-            document.getElementById('loadingPlaceholder').style.display = 'none'; // Verstecke den Lade-Platzhalter bei einem Fehler
+            document.getElementById('loadingPlaceholder').style.display = 'none';
             return;
         }
 
-        // Setze die Bevölkerung und die Hauptstadttexte
         const population = populationJson.data.populationCounts[populationJson.data.populationCounts.length - 1].value;
         document.getElementById('populationText').innerHTML = `${population.toLocaleString()}`;
         document.getElementById('populationText').classList.add('population-style');
@@ -365,13 +350,11 @@ async function getEnergyData() {
         const capitalTranslation = countryData[countryCode].capitalTranslation || 'Unbekannt';
         document.getElementById('capitalLabel').innerText = 'Hauptstadt:';
         document.getElementById('capitalName').innerText = capitalTranslation;
-        document.getElementById('capitalName').style.display = 'block';  // Zeige den Hauptstadttext wieder an
+        document.getElementById('capitalName').style.display = 'block';
 
-        // Setze das Flaggenbild und zeige es an
         document.getElementById('flagImage').src = flagJson.data.flag;
-        document.getElementById('flagImage').style.display = 'block'; // Zeige die Flagge an, sobald sie geladen ist
+        document.getElementById('flagImage').style.display = 'block';
 
-        // Zeige den Ländernamen in fett
         const countryNameInGerman = countryData[countryCode].aliases[0];
         const countryNameText = `${countryNameInGerman}`;
         const countryNameElement = document.createElement('p');
@@ -379,16 +362,15 @@ async function getEnergyData() {
         countryNameElement.innerHTML = `<strong>${countryNameText}</strong>`;
         document.getElementById('text-container').insertBefore(countryNameElement, document.getElementById('flagImage'));
 
-        // Verstecke den Lade-Platzhalter und zeige den restlichen Textcontainer an
         document.getElementById('loadingPlaceholder').style.display = 'none';
         document.getElementById('helloText').style.display = 'block';
         document.getElementById('populationText').style.display = 'block';
-        document.getElementById('capitalText').style.display = 'block'; // Zeige den Text der Hauptstadt an
+        document.getElementById('capitalText').style.display = 'block';
 
     } catch (error) {
         alert("Fehler beim Abrufen der Daten: " + error.message);
-        document.getElementById('loadingPlaceholder').style.display = 'none'; // Verstecke den Lade-Platzhalter bei einem Fehler
-        document.getElementById('text-container').style.display = 'none'; // Verstecke den gesamten Textcontainer bei einem Fehler
+        document.getElementById('loadingPlaceholder').style.display = 'none';
+        document.getElementById('text-container').style.display = 'none';
     }
 }
 
@@ -412,10 +394,8 @@ for (let i = 0; i < spans.length; i++) {
 }
 
 document.getElementById('steckerIcon').addEventListener('click', function() {
-    // Wechselt die Torch-Funktion (Taschenlampe) für den Mauszeiger
     document.body.classList.toggle('blended');
     
-    // Blendet die UI-Elemente aus
     document.getElementById('form-container').style.display = 'none';
     document.getElementById('text-container').style.display = 'none';
     document.getElementById('chart-container').style.display = 'none';
@@ -431,7 +411,6 @@ document.getElementById('steckerIcon').addEventListener('click', function() {
         currentMarker = null;
     }
 
-    // Zeigt das Zitat an
     const quotePopup = document.getElementById('quotePopup');
     if (quotePopup.style.display === 'none' || quotePopup.style.display === '') {
         quotePopup.style.display = 'block';
@@ -440,12 +419,9 @@ document.getElementById('steckerIcon').addEventListener('click', function() {
     }
 });
 
-// Torch-Funktion für die Maus
 window.addEventListener('mousemove', function(e) {
     if (document.body.classList.contains('blended')) {
         document.documentElement.style.setProperty('--pointerX', e.clientX + 'px');
         document.documentElement.style.setProperty('--pointerY', e.clientY + 'px');
     }
 });
-
-
