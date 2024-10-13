@@ -11,7 +11,9 @@ Ziel dieses Projekts war es, den Stromverbrauch verschiedener europäischer Län
    - Auf den ersten Blick schien diese API gut geeignet, da sie auf der Webseite freepublicapis.com als zuverlässig dargestellt wurde. Es stellte sich jedoch heraus, dass sie schnell überlastet war, wenn Daten für zu viele Länder abgefragt wurden. Besonders bei Ländern wie der Schweiz wurden häufig keine Stromdaten zurückgeliefert, was die Visualisierung erschwerte. Ähnlich war es bei Deutschland. Hingegen funktionierte die API bei Ländern wie Portugal und Spanien besser, wobei der Stromverbrauch der letzten 24 Stunden zuverlässig abgerufen werden konnte. 
 
 ### Technische Herausforderungen
-Ein Problem bei der Stromdaten-API war, dass sie sehr oft keine Daten lieferte, insbesondere wenn mehrere Länder gleichzeitig abgefragt wurden. Dies führte dazu, dass wir die Auswahl der Länder einschränken mussten. Trotz dieser Einschränkung hatten wir bei bestimmten Ländern wie der Schweiz oft keine Daten, sodass eine Darstellung des Stromverbrauchs nicht möglich war.
+- Ein Problem bei der Stromdaten-API war, dass sie sehr oft keine Daten lieferte, insbesondere wenn mehrere Länder gleichzeitig abgefragt wurden. Dies führte dazu, dass wir die Auswahl der Länder einschränken mussten. Trotz dieser Einschränkung hatten wir bei bestimmten Ländern wie der Schweiz oft keine Daten, sodass eine Darstellung des Stromverbrauchs nicht möglich war.
+- Eine weiteres Problem war, dass sich manchmal der Ländername nach einer erneuten Suche nach einem anderen Land in der Suchleiste immer noch angezeigt wurde. Hier konnten wir den Fehler im Code nicht finden und nehmen an, dass es sich um einen Bug handelt.
+
 
 Ein weiteres technisches Problem trat bei der Verwendung der Karte von **Mapbox** ([https://www.mapbox.com/](https://www.mapbox.com/)) auf. Während die Karte insgesamt gut funktionierte und das Anfliegen der Länder korrekt umsetzte, gab es bei der Suche nach Kosovo einen Fehler: Es wurden fälschlicherweise zwei Marker auf der Karte gesetzt, und das System stieg aus. Wir vermuten, dass dies ein Fehler in der Länder-API ist, da er sich im Code nicht nachvollziehen liess.
 
