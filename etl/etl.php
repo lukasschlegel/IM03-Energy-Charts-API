@@ -1,71 +1,54 @@
 <?php
 require_once 'config.php';
 
-// Funktion zum Abrufen der Daten für ein bestimmtes Land
 function fetchPowerData($countryCode) {
     $url = "https://api.energy-charts.info/public_power?country=" . $countryCode;
 
-    // Initialisiert eine cURL-Sitzung
     $ch = curl_init($url);
 
-    // Setzt Optionen
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-    curl_setopt($ch, CURLOPT_FAILONERROR, true); // cURL gibt Fehler zurück, wenn etwas schief geht
+    curl_setopt($ch, CURLOPT_FAILONERROR, true);
 
-    // Führt die cURL-Sitzung aus und erhält den Inhalt
     $response = curl_exec($ch);
 
-    // Fehlerüberprüfung für cURL
     if (curl_errno($ch)) {
-        return null; // Rückgabe von null, wenn die API nicht erreichbar ist
+        return null;
     }
 
-    // Schließt die cURL-Sitzung
     curl_close($ch);
 
-    // Dekodiert die JSON-Antwort und gibt Daten zurück
     return json_decode($response, true);
 }
 
-// Funktion zum Abrufen der Preisdaten für ein bestimmtes Land
 function fetchPriceData($countryCode) {
     $url = "https://api.energy-charts.info/price?country=" . $countryCode;
 
-    // Initialisiert eine cURL-Sitzung
     $ch = curl_init($url);
 
-    // Setzt Optionen
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-    curl_setopt($ch, CURLOPT_FAILONERROR, true); // cURL gibt Fehler zurück, wenn etwas schief geht
+    curl_setopt($ch, CURLOPT_FAILONERROR, true);
 
-    // Führt die cURL-Sitzung aus und erhält den Inhalt
     $response = curl_exec($ch);
 
-    // Fehlerüberprüfung für cURL
     if (curl_errno($ch)) {
-        return null; // Rückgabe von null, wenn die API nicht erreichbar ist
+        return null;
     }
 
-    // Schließt die cURL-Sitzung
     curl_close($ch);
 
-    // Dekodiert die JSON-Antwort und gibt Daten zurück
     return json_decode($response, true);
 }
 
-// Liste der Länder
 $countries = ['ch', 'it', 'de', 'fr', 'at', 'es', 'pt', 'gb', 'gr'];
 
 $biddingZones = ['CH','IT-North', 'DE-LU', 'FR', 'AT', 'ES', 'PT', 'GB', 'GR'];
 
-// Establish database connection
 try {
     $pdo = new PDO($dsn, $username, $password, $options);
 } catch (PDOException $e) {
     die("Connection failed: " . $e->getMessage());
 }
 
-// SQL-Befehl vorbereiten (eine Zeile pro Land)
 $sql = "INSERT INTO Energy_Charts_API (
     Crossborderelectricitytrading,
     nuclear,
@@ -96,11 +79,9 @@ $sql = "INSERT INTO Energy_Charts_API (
 
 $stmt = $pdo->prepare($sql);
 
-// Schleife über alle Länder
 foreach ($countries as $countryCode) {
     echo "Daten für Land: <strong>$countryCode</strong>\n";
 
-    // Initialisiere Standardwerte als null
     $productionData = [
         'Crossborderelectricitytrading' => null,
         'nuclear' => null,
@@ -114,13 +95,11 @@ foreach ($countries as $countryCode) {
         'Renewableshareofload' => null
     ];
 
-    // Abrufen der Stromerzeugungsdaten
     try {
         $data = fetchPowerData($countryCode);
         if ($data && isset($data['unix_seconds'])) {
             $latestIndex = count($data['unix_seconds']) - 1;
 
-            // Setze die Daten nur, wenn die Stromproduktionsdaten erfolgreich abgerufen wurden
             $productionData['Crossborderelectricitytrading'] = $data['production_types'][0]['data'][$latestIndex] ?? null;
             $productionData['nuclear'] = $data['production_types'][1]['data'][$latestIndex] ?? null;
             $productionData['HydroRunofRiver'] = $data['production_types'][2]['data'][$latestIndex] ?? null;
@@ -140,7 +119,6 @@ foreach ($countries as $countryCode) {
         echo "<li><span style='color:red;'>Fehler beim Abrufen der Stromproduktionsdaten für $countryCode: " . $e->getMessage() . "</span></li>\n";
     }
 
-    // Abrufen der Preisdaten
     try {
         $priceData = fetchPriceData($countryCode);
         if ($priceData && isset($priceData['price'])) {
@@ -155,7 +133,6 @@ foreach ($countries as $countryCode) {
         $latestPrice = null;
     }
 
-    // Daten in die Datenbank einfügen, selbst wenn keine Produktionsdaten vorhanden sind
     if ($stmt->execute([
         ':Crossborderelectricitytrading' => $productionData['Crossborderelectricitytrading'],
         ':nuclear' => $productionData['nuclear'],
@@ -167,7 +144,7 @@ foreach ($countries as $countryCode) {
         ':Residualload' => $productionData['Residualload'],
         ':Renewableshareofgeneration' => $productionData['Renewableshareofgeneration'],
         ':Renewableshareofload' => $productionData['Renewableshareofload'],
-        ':country' => $countryCode,  // Länderkürzel hinzufügen
+        ':country' => $countryCode,
         ':price' => $latestPrice
     ])) {
         echo "<li>Alle Daten für $countryCode erfolgreich in die Datenbank eingefügt.</li></ul><br>\n";
