@@ -13,6 +13,7 @@ Ziel dieses Projekts war es, den Stromverbrauch verschiedener europäischer Län
 ### Technische Herausforderungen
 - Ein Problem bei der Stromdaten-API war, dass sie sehr oft keine Daten lieferte, insbesondere wenn mehrere Länder gleichzeitig abgefragt wurden. Dies führte dazu, dass wir die Auswahl der Länder einschränken mussten. Trotz dieser Einschränkung hatten wir bei bestimmten Ländern wie der Schweiz oft keine Daten, sodass eine Darstellung des Stromverbrauchs nicht möglich war.
 - Eine weiteres Problem war, dass sich manchmal der Ländername nach einer erneuten Suche nach einem anderen Land in der Suchleiste immer noch angezeigt wurde. Hier konnten wir den Fehler im Code nicht finden und nehmen an, dass es sich um einen Bug handelt.
+- Eine Herausforderung war es auch, die verschiedenen Produktionstypen (Atom-, Wind-, Wasserkraft) visuell gut verständlich darzustellen, weil z.B die Windenergie oft sehr viel weniger Anteile hat als die Wasserkraft. Wir haben es so gelöst, dass man im Graph auf die Produktionstypen klicken kann, und so einzelne Produktionstypen herausfiltern kann.
 
 
 Ein weiteres technisches Problem trat bei der Verwendung der Karte von **Mapbox** ([https://www.mapbox.com/](https://www.mapbox.com/)) auf. Während die Karte insgesamt gut funktionierte und das Anfliegen der Länder korrekt umsetzte, gab es bei der Suche nach Kosovo einen Fehler: Es wurden fälschlicherweise zwei Marker auf der Karte gesetzt, und das System stieg aus. Wir vermuten, dass dies ein Fehler in der Länder-API ist, da er sich im Code nicht nachvollziehen liess.

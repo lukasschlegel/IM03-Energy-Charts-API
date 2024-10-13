@@ -452,7 +452,7 @@ body.blended:before {
     #chart-container {
         width: 90%;
         left: 50vw;
-        height: 200px;
+        height: 190px;
     }
 
     #text-container {
@@ -492,6 +492,10 @@ body.blended:before {
 
     #suchen {
         right: 35px;
+    }
+
+    #disclaimer {
+        font-size: 10px;
     }
     
     .stecker-icon {
@@ -541,6 +545,22 @@ body.blended:before {
     }
 
     #quoteText {
-        font-size: 15px;
+        font-size: 12px;
     }
+
+    #chart-container {
+        height: 180px;
+        left: 50vw;
+        top: 73vh;
+        padding: 5px;
+    }
+
+    #chartError {
+        font-size: 12px;
+    }
+
+    #disclaimer {
+        font-size: 8px;
+    }
+
 }

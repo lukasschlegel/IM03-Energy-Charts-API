@@ -171,7 +171,7 @@ async function renderChart(countryCode) {
                             text: 'Leistung (MW)',
                             color: 'black',
                             font: {
-                                size: 14
+                                size: 12
                             }
                         },
                         ticks: {
